@@ -229,22 +229,22 @@
 
     .emoji-bubble {
       position: absolute;
-      opacity: 0.2;
-      animation: floatEmoji 8s ease-in-out infinite alternate;
-      filter: blur(0.2px);
+      opacity: 0.55;                 /* 더 진하게 */
+      animation: floatEmoji 10s ease-in-out infinite alternate;
+      filter: blur(0px);             /* 흐릿함 제거 */
     }
 
     @keyframes floatEmoji {
       0% {
         transform: translate(var(--x-start), var(--y-start));
-        opacity: 0.16;
+        opacity: 0.45;
       }
       50% {
-        opacity: 0.28;
+        opacity: 0.75;
       }
       100% {
         transform: translate(var(--x-end), var(--y-end));
-        opacity: 0.12;
+        opacity: 0.4;
       }
     }
 
@@ -784,7 +784,7 @@
         span.style.setProperty("--y-end", yEnd);
         span.style.left = "50%";
         span.style.top = "50%";
-        span.style.fontSize = (Math.random() * 12 + 18).toFixed(0) + "px";
+        span.style.fontSize = (Math.random() * 16 + 26).toFixed(0) + "px"; // 26~42px
         span.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
 
         emojiLayerEl.appendChild(span);
