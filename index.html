@@ -156,7 +156,7 @@
       color: #888;
     }
 
-    /* 타이머 화면 */
+    /* 타이머 화면 헤더 */
     .timer-header {
       display: flex;
       justify-content: space-between;
@@ -190,6 +190,7 @@
       color: #8c2649;
     }
 
+    /* 타이머 */
     .timer-wrapper {
       display: flex;
       flex-direction: column;
@@ -271,15 +272,18 @@
 
     .timer-controls {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       margin-top: 12px;
       flex-wrap: wrap;
       justify-content: center;
     }
 
-    .stickers-control {
+    .extra-controls {
+      display: flex;
+      gap: 8px;
       margin-top: 8px;
-      text-align: center;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .status-line {
@@ -290,6 +294,142 @@
       text-align: center;
     }
 
+    /* Task planner 화면 */
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .task-planner {
+      margin-top: 4px;
+      padding: 10px 10px 12px;
+      border-radius: 14px;
+      background: #f9f4ff;
+      border: 1px solid #e3d7ff;
+    }
+
+    .task-planner-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .task-planner-sub {
+      font-size: 0.8rem;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    .task-slots {
+      max-height: 210px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .task-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .task-time {
+      width: 60px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .task-input {
+      flex: 1;
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid #e3d7ff;
+      font-size: 0.85rem;
+      background: #fff;
+      outline: none;
+    }
+
+    .task-input:focus {
+      border-color: #ff9ecb;
+      box-shadow: 0 0 0 2px rgba(255, 158, 203, 0.3);
+    }
+
+    .task-save-row {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .task-save-hint {
+      font-size: 0.75rem;
+      color: #999;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    /* 이번 세션 할 일 보기 */
+    .session-tasks {
+      margin-top: 14px;
+      padding: 10px 10px 8px;
+      border-radius: 14px;
+      background: #fff9fb;
+      border: 1px solid #ffd6e8;
+    }
+
+    .session-tasks-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .my-task-card {
+      border-radius: 12px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      background: #ffe7f3;
+      border: 1px solid #ffb6da;
+      font-size: 0.9rem;
+    }
+
+    .my-task-header {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #a11a54;
+      margin-bottom: 4px;
+    }
+
+    .my-task-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #4a2b3a;
+    }
+
+    .other-tasks-list {
+      font-size: 0.82rem;
+      color: #555;
+    }
+
+    .other-task-item {
+      margin-bottom: 2px;
+    }
+
+    .other-name {
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .no-session-tasks {
+      font-size: 0.8rem;
+      color: #999;
+    }
+
+    /* Active members */
     .active-names-section {
       margin-top: 14px;
     }
@@ -327,6 +467,7 @@
       margin-top: 6px;
     }
 
+    /* 스티커 테이블 */
     .sticker-table {
       margin-top: 14px;
       font-size: 0.85rem;
@@ -368,6 +509,87 @@
       color: #555;
     }
 
+    /* 내 할 일 패널 */
+    .my-tasks-panel {
+      margin-top: 12px;
+      padding: 10px 10px 12px;
+      border-radius: 14px;
+      background: #fef5ff;
+      border: 1px solid #f4cfff;
+    }
+
+    .my-tasks-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .my-tasks-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .my-tasks-sub {
+      font-size: 0.78rem;
+      color: #777;
+      margin-bottom: 6px;
+    }
+
+    .my-tasks-list {
+      max-height: 220px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .my-task-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .my-task-time {
+      width: 60px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .my-task-input {
+      flex: 1;
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid #f0c8ff;
+      font-size: 0.84rem;
+      background: #fff;
+      outline: none;
+    }
+
+    .my-task-input:focus {
+      border-color: #ff9ecb;
+      box-shadow: 0 0 0 2px rgba(255, 158, 203, 0.25);
+    }
+
+    .my-tasks-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .my-tasks-hint {
+      font-size: 0.75rem;
+      color: #999;
+    }
+
+    #myTasksHistory {
+      margin-top: 10px;
+    }
+
     @media (max-width: 600px) {
       .app {
         margin: 16px 8px;
@@ -393,10 +615,10 @@
   <div class="app">
     <h1>뽀모 실시간 타이머 🍅</h1>
     <div class="subtitle">
-      정각 / 30분에 같이 25분 공부 + 5분 쉬는 타이머 💪
+      이름 → 할 일 적기 → 타이머 순서로 같이 공부해요 💪
     </div>
 
-    <!-- 이름 선택 화면 -->
+    <!-- 1. 이름 선택 화면 -->
     <div id="name-screen" class="screen">
       <div class="section-title">1. 이름 선택하기</div>
       <input
@@ -406,16 +628,45 @@
       />
       <div id="nameList" class="name-list"></div>
       <div class="name-footer">
-        선택 후 &ldquo;타이머로 가기&rdquo; 버튼을 눌러 주세요 :)
+        이름 클릭 후 &ldquo;할 일 적으러 가기&rdquo;를 눌러 주세요 :)
       </div>
       <div style="margin-top: 10px; text-align: center;">
-        <button id="goTimerBtn" class="primary-btn">
-          ⏱ 타이머로 가기
+        <button id="goTaskBtn" class="primary-btn">
+          ✏️ 할 일 적으러 가기
         </button>
       </div>
     </div>
 
-    <!-- 타이머 화면 -->
+    <!-- 2. 할 일 작성 화면 -->
+    <div id="task-screen" class="screen hidden">
+      <div class="task-header">
+        <div class="current-name">
+          현재 선택: <span id="currentNameTask"></span>
+        </div>
+        <button id="backToNameBtn" class="secondary-btn">
+          🔄 이름 다시 선택
+        </button>
+      </div>
+
+      <div class="task-planner">
+        <div class="task-planner-title">2. 오늘 다가오는 세션 할 일 적기 ✏️</div>
+        <div class="task-planner-sub">
+          지금 시간 기준 <strong>다음 10개 공부 세션(5시간)</strong>까지 미리 적을 수 있어요.<br />
+          예: 9:15에 들어오면 9:30, 10:00, 10:30 ... 순서로 보여줍니다.
+        </div>
+        <div id="taskSlots" class="task-slots"></div>
+        <div class="task-save-row">
+          <button id="goTimerFromTaskBtn" class="primary-btn">
+            ⏱ 타이머로 가기 (자동 저장)
+          </button>
+          <div class="task-save-hint">
+            빈 칸으로 두면 해당 세션 할 일은 삭제됩니다.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 타이머 화면 -->
     <div id="timer-screen" class="screen hidden">
       <div class="timer-header">
         <div class="current-name">
@@ -443,12 +694,40 @@
             ⏹ 끝내기 (공부 종료)
           </button>
         </div>
-        <div class="stickers-control">
+        <div class="extra-controls">
+          <button id="myTasksBtn" class="secondary-btn">
+            📝 내 할 일 (2일치)
+          </button>
           <button id="showStickersBtn" class="secondary-btn">
-            📊 최근 2일 스티커 기록 보기
+            📊 최근 2일 스티커
           </button>
         </div>
         <div class="status-line" id="statusLine"></div>
+      </div>
+
+      <!-- 이번 세션 할 일 -->
+      <div class="session-tasks" id="sessionTasks"></div>
+
+      <!-- 내 할 일 패널 -->
+      <div id="myTasksPanel" class="my-tasks-panel hidden">
+        <div class="my-tasks-header">
+          <div class="my-tasks-title">내 할 일 (오늘 + 어제)</div>
+          <button id="closeMyTasksBtn" class="secondary-btn" style="padding:4px 10px;font-size:0.8rem;">
+            닫기 ✖️
+          </button>
+        </div>
+        <div class="my-tasks-sub">
+          위에는 <strong>앞으로 남은 세션</strong>만 시간별로 편집할 수 있고,<br />
+          아래 표에는 <strong>이미 지난 세션/어제 기록</strong>이 정리됩니다.
+        </div>
+        <div id="myTasksList" class="my-tasks-list"></div>
+        <div id="myTasksHistory" class="sticker-table"></div>
+        <div class="my-tasks-footer">
+          <div class="my-tasks-hint">* 빈 칸으로 두고 저장하면 해당 세션 할 일이 삭제됩니다.</div>
+          <button id="saveMyTasksBtn" class="primary-btn" style="padding:7px 12px;font-size:0.85rem;">
+            💾 수정 내용 저장
+          </button>
+        </div>
       </div>
 
       <div class="active-names-section">
@@ -468,125 +747,41 @@
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    // --- 1. Supabase 설정 ---
     const SUPABASE_URL = "https://upiobealvympxbypfmkc.supabase.co";
     const SUPABASE_ANON_KEY =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwaW9iZWFsdnltcHhieXBmbWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzNzYxNDIsImV4cCI6MjA3ODk1MjE0Mn0.mLvGyy-eMWr-ow2b2USMg7PXKq2EUfK1fyJEsdGThKw";
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // --- 2. 뽀모 멤버 목록 ---
     const MEMBERS = [
-      "박미선🧶",
-      "고주연🎬",
-      "문하영🌙",
-      "전은석🍕",
-      "이아로🐰",
-      "김태훈🪵",
-      "박정현🥁",
-      "윤장혁🦇",
-      "김민지🚈",
-      "이정철🌵",
-      "권도이🍟",
-      "임가영🔮",
-      "정성우🥰",
-      "김영서🐾",
-      "최문영🍎",
-      "이경표🎫",
-      "김성환🍘",
-      "성규현♾️",
-      "박은지🦚",
-      "박종혁🍷",
-      "김정현🎻",
-      "송창호🪖",
-      "박민석🛏️",
-      "이예원🎭",
-      "조재현🍍",
-      "조서영🇬🇧",
-      "고병찬⚽️",
-      "정민영🦦",
-      "조성현🍵",
-      "이지은💞",
-      "황새벽🌆",
-      "조정범🫒",
-      "박영훈👻",
-      "강민정🌽",
-      "박재진🌊",
-      "이승호🎲",
-      "김민정🍨",
-      "전하윤🧀",
-      "이남수👇",
-      "김은성🐱",
-      "김지환🔮",
-      "이재원💵",
-      "정연수🦭",
-      "김도훈🎖️",
-      "이금비🌧",
-      "최지원🕳",
-      "박민경🍉",
-      "권규범🐆",
-      "박대헌🥋",
-      "정다희🐿️",
-      "김창훈🪟",
-      "조충연🐦‍🔥",
-      "최다예🍭",
-      "최서영👍",
-      "노소현🐢",
-      "박우빈☔️",
-      "이가현🥞",
-      "배지은💍",
-      "정계훈🥚",
-      "인치광💡",
-      "강태훈💪",
-      "박경서🌅",
-      "박준표🐕",
-      "조원창🛡️",
-      "지슬아🧊",
-      "차민구♠️",
-      "양진희🐑",
-      "박혜연🎊",
-      "서원두☕️",
-      "안보현😎",
-      "우은지🍒",
-      "김민섭🕶️",
-      "박미선🐳",
-      "여지원🕹️",
-      "유현빈☀️",
-      "이현준🍫",
-      "이현지💌",
-      "허태웅🏀",
-      "류경호👮",
-      "박동건☄️",
-      "고희원😄",
-      "김기원⚪",
-      "김예원🐥",
-      "김준형🤖",
-      "김진곤🍙",
-      "김진수💦",
-      "김태경🌱",
-      "민지현🍏",
-      "백하윤❄️",
-      "송영훈💿",
-      "양소연🏟",
-      "윤신혜😆",
-      "윤주성🏰",
-      "이준호👣",
-      "이창현🐌",
-      "정병혁🏸",
-      "정예은🧇",
-      "정유민🐹",
-      "조민제🐦",
-      "최영인📀",
-      "하유청🐶",
-      "홍승현🍳"
+      "박미선🧶","고주연🎬","문하영🌙","전은석🍕","이아로🐰","김태훈🪵","박정현🥁","윤장혁🦇",
+      "김민지🚈","이정철🌵","권도이🍟","임가영🔮","정성우🥰","김영서🐾","최문영🍎","이경표🎫",
+      "김성환🍘","성규현♾️","박은지🦚","박종혁🍷","김정현🎻","송창호🪖","박민석🛏️","이예원🎭",
+      "조재현🍍","조서영🇬🇧","고병찬⚽️","정민영🦦","조성현🍵","이지은💞","황새벽🌆","조정범🫒",
+      "박영훈👻","강민정🌽","박재진🌊","이승호🎲","김민정🍨","전하윤🧀","이남수👇","김은성🐱",
+      "김지환🔮","이재원💵","정연수🦭","김도훈🎖️","이금비🌧","최지원🕳","박민경🍉","권규범🐆",
+      "박대헌🥋","정다희🐿️","김창훈🪟","조충연🐦‍🔥","최다예🍭","최서영👍","노소현🐢","박우빈☔️",
+      "이가현🥞","배지은💍","정계훈🥚","인치광💡","강태훈💪","박경서🌅","박준표🐕","조원창🛡️",
+      "지슬아🧊","차민구♠️","양진희🐑","박혜연🎊","서원두☕️","안보현😎","우은지🍒","김민섭🕶️",
+      "박미선🐳","여지원🕹️","유현빈☀️","이현준🍫","이현지💌","허태웅🏀","류경호👮","박동건☄️",
+      "고희원😄","김기원⚪","김예원🐥","김준형🤖","김진곤🍙","김진수💦","김태경🌱","민지현🍏",
+      "백하윤❄️","송영훈💿","양소연🏟","윤신혜😆","윤주성🏰","이준호👣","이창현🐌","정병혁🏸",
+      "정예은🧇","정유민🐹","조민제🐦","최영인📀","하유청🐶","홍승현🍳"
     ];
 
-    // --- 3. DOM 요소 ---
     const nameScreen = document.getElementById("name-screen");
+    const taskScreen = document.getElementById("task-screen");
     const timerScreen = document.getElementById("timer-screen");
+
     const nameListEl = document.getElementById("nameList");
     const nameSearchEl = document.getElementById("nameSearch");
-    const goTimerBtn = document.getElementById("goTimerBtn");
+    const goTaskBtn = document.getElementById("goTaskBtn");
+
+    const currentNameTaskEl = document.getElementById("currentNameTask");
+    const backToNameBtn = document.getElementById("backToNameBtn");
+    const goTimerFromTaskBtn = document.getElementById("goTimerFromTaskBtn");
+    const taskSlotsEl = document.getElementById("taskSlots");
+
     const currentNameEl = document.getElementById("currentName");
     const changeNameBtn = document.getElementById("changeNameBtn");
     const timerDisplay = document.getElementById("timerDisplay");
@@ -600,11 +795,22 @@
     const emojiLayerEl = document.getElementById("emojiLayer");
     const showStickersBtn = document.getElementById("showStickersBtn");
     const stickerTableEl = document.getElementById("stickerTable");
+    const sessionTasksEl = document.getElementById("sessionTasks");
+
+    const myTasksBtn = document.getElementById("myTasksBtn");
+    const myTasksPanel = document.getElementById("myTasksPanel");
+    const myTasksListEl = document.getElementById("myTasksList");
+    const myTasksHistoryEl = document.getElementById("myTasksHistory");
+    const saveMyTasksBtn = document.getElementById("saveMyTasksBtn");
+    const closeMyTasksBtn = document.getElementById("closeMyTasksBtn");
 
     let selectedName = null;
     let selectedButton = null;
+    let taskSlots = [];
+    let lastTaskBlockKey = null;
+    let myTasksData = [];
+    let myEditableTasks = [];
 
-    // --- 4. 현재 블록 정보 계산 (정각/30분 기준) ---
     function getCurrentBlock(now = new Date()) {
       const m = now.getMinutes();
       const s = now.getSeconds();
@@ -622,7 +828,6 @@
       const blockEnd = new Date(blockStart.getTime() + 25 * 60 * 1000);
       const joinDeadline = new Date(blockStart.getTime() + 5 * 60 * 1000);
       const endDeadline = new Date(blockEnd.getTime() + 5 * 60 * 1000);
-
       const phase = now < blockEnd ? "study" : "break";
       const blockKey = blockStart.toISOString();
       const blockDateStr = blockStart.toISOString().slice(0, 10);
@@ -638,12 +843,17 @@
       };
     }
 
-    // --- 5. 타이머 업데이트 + 색상 변경 ---
+    function getNextStudyStart(now = new Date()) {
+      const info = getCurrentBlock(now);
+      return new Date(info.blockStart.getTime() + 30 * 60 * 1000);
+    }
+
     function updateTimer() {
       const now = new Date();
       const m = now.getMinutes();
       const s = now.getSeconds();
       const totalSec = m * 60 + s;
+      const info = getCurrentBlock(now);
 
       let nextBoundary;
       let phase;
@@ -665,10 +875,8 @@
       const remaining = nextBoundary - totalSec;
       const mm = Math.floor(remaining / 60);
       const ss = remaining % 60;
-
-      const mmStr = String(mm).padStart(2, "0");
-      const ssStr = String(ss).padStart(2, "0");
-      timerDisplay.textContent = `${mmStr}:${ssStr}`;
+      timerDisplay.textContent =
+        String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
 
       if (phase === "study") {
         phaseLabel.textContent = "공부 시간 🍅 (25분)";
@@ -685,29 +893,30 @@
         timerCircle.classList.add("break");
         timerCircle.classList.remove("study");
       }
+
+      if (info.blockKey !== lastTaskBlockKey) {
+        lastTaskBlockKey = info.blockKey;
+        loadCurrentSessionTasks(info);
+      }
     }
 
     setInterval(updateTimer, 1000);
     updateTimer();
 
-    // --- 6. 이름 선택 UI ---
     function renderNameButtons(filter = "") {
       nameListEl.innerHTML = "";
       const lower = filter.trim().toLowerCase();
 
       MEMBERS.forEach((name) => {
         if (lower && !name.toLowerCase().includes(lower)) return;
-
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "name-btn";
         btn.textContent = name;
-
         if (selectedName === name) {
           btn.classList.add("selected");
           selectedButton = btn;
         }
-
         btn.addEventListener("click", () => {
           selectedName = name;
           localStorage.setItem("pomodoroName", selectedName);
@@ -715,7 +924,6 @@
           btn.classList.add("selected");
           selectedButton = btn;
         });
-
         nameListEl.appendChild(btn);
       });
 
@@ -729,11 +937,24 @@
       renderNameButtons(e.target.value);
     });
 
-    // --- 7. 화면 전환 ---
     function showNameScreen() {
       nameScreen.classList.remove("hidden");
+      taskScreen.classList.add("hidden");
       timerScreen.classList.add("hidden");
       statusLine.textContent = "";
+    }
+
+    function showTaskScreen() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+      currentNameTaskEl.textContent = selectedName;
+      nameScreen.classList.add("hidden");
+      taskScreen.classList.remove("hidden");
+      timerScreen.classList.add("hidden");
+      statusLine.textContent = "";
+      setupTaskPlanner();
     }
 
     function showTimerScreen() {
@@ -743,19 +964,22 @@
       }
       currentNameEl.textContent = selectedName;
       nameScreen.classList.add("hidden");
+      taskScreen.classList.add("hidden");
       timerScreen.classList.remove("hidden");
       statusLine.textContent = "";
       loadActiveMembers();
+      const info = getCurrentBlock();
+      loadCurrentSessionTasks(info);
     }
 
-    goTimerBtn.addEventListener("click", showTimerScreen);
+    goTaskBtn.addEventListener("click", showTaskScreen);
+    backToNameBtn.addEventListener("click", showNameScreen);
 
     changeNameBtn.addEventListener("click", () => {
-      leaveSession(); // 이름 바꾸면 세션에서 빠지게
+      leaveSession();
       showNameScreen();
     });
 
-    // --- 8. Active 멤버 + 이모지 플로팅 ---
     async function loadActiveMembers() {
       const { data, error } = await supabase
         .from("pomodoro_active")
@@ -767,7 +991,6 @@
         statusLine.textContent = "멤버 목록을 불러오지 못했습니다 😢";
         return;
       }
-
       renderActiveMembers(data || []);
     }
 
@@ -779,52 +1002,425 @@
         renderEmojiLayer([]);
         return;
       }
-
       rows.forEach((row) => {
         const chip = document.createElement("div");
         chip.className = "active-chip";
-        if (row.member_name === selectedName) {
-          chip.classList.add("me");
-        }
+        if (row.member_name === selectedName) chip.classList.add("me");
         chip.textContent = row.member_name;
         activeNamesEl.appendChild(chip);
       });
-
       renderEmojiLayer(rows);
     }
 
     function renderEmojiLayer(rows) {
       emojiLayerEl.innerHTML = "";
       const maxEmojis = Math.min(rows.length, 10);
-
       for (let i = 0; i < maxEmojis; i++) {
         const row = rows[i];
         const glyphs = Array.from(row.member_name);
         const emoji = glyphs[glyphs.length - 1] || "🍅";
-
         const span = document.createElement("span");
         span.className = "emoji-bubble";
         span.textContent = emoji;
-
         const xStart = (Math.random() * 140 - 70).toFixed(0) + "px";
         const yStart = (Math.random() * 140 - 70).toFixed(0) + "px";
         const xEnd = (Math.random() * 140 - 70).toFixed(0) + "px";
         const yEnd = (Math.random() * 140 - 70).toFixed(0) + "px";
-
         span.style.setProperty("--x-start", xStart);
         span.style.setProperty("--y-start", yStart);
         span.style.setProperty("--x-end", xEnd);
         span.style.setProperty("--y-end", yEnd);
         span.style.left = "50%";
         span.style.top = "50%";
-        span.style.fontSize = (Math.random() * 16 + 26).toFixed(0) + "px"; // 26~42px
+        span.style.fontSize = (Math.random() * 16 + 26).toFixed(0) + "px";
         span.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
-
         emojiLayerEl.appendChild(span);
       }
     }
 
-    // --- 9. 시작 / 끝내기 + 스티커 로직 ---
+    function formatTimeLabel(d) {
+      return d.toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function setupTaskPlanner() {
+      const now = new Date();
+      const firstStart = getNextStudyStart(now);
+      taskSlots = [];
+      for (let i = 0; i < 10; i++) {
+        const start = new Date(firstStart.getTime() + i * 30 * 60 * 1000);
+        const blockKey = start.toISOString();
+        const blockDateStr = start.toISOString().slice(0, 10);
+        taskSlots.push({ blockKey, blockDateStr, start });
+      }
+      renderTaskSlots();
+      loadMyTasksForSlots();
+    }
+
+    function renderTaskSlots() {
+      taskSlotsEl.innerHTML = "";
+      taskSlots.forEach((slot) => {
+        const row = document.createElement("div");
+        row.className = "task-row";
+        const timeDiv = document.createElement("div");
+        timeDiv.className = "task-time";
+        timeDiv.textContent = formatTimeLabel(slot.start);
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "task-input";
+        input.placeholder = "이 세션에 할 일 적기";
+        input.dataset.blockKey = slot.blockKey;
+        row.appendChild(timeDiv);
+        row.appendChild(input);
+        taskSlotsEl.appendChild(row);
+      });
+    }
+
+    async function loadMyTasksForSlots() {
+      if (!selectedName || !taskSlots.length) return;
+      const keys = taskSlots.map((s) => s.blockKey);
+      const { data, error } = await supabase
+        .from("pomodoro_tasks")
+        .select("*")
+        .eq("member_name", selectedName)
+        .in("block_key", keys);
+      if (error) {
+        console.error("loadMyTasksForSlots error", error);
+        return;
+      }
+      const byKey = new Map();
+      (data || []).forEach((row) => byKey.set(row.block_key, row.task_text));
+      const inputs = taskSlotsEl.querySelectorAll(".task-input");
+      inputs.forEach((input) => {
+        const key = input.dataset.blockKey;
+        input.value = byKey.get(key) || "";
+      });
+    }
+
+    async function saveTasks() {
+      if (!selectedName || !taskSlots.length) return;
+      const inputs = taskSlotsEl.querySelectorAll(".task-input");
+      const rowsToUpsert = [];
+      const keysToDelete = [];
+      const slotMap = new Map();
+      taskSlots.forEach((s) => slotMap.set(s.blockKey, s));
+
+      inputs.forEach((input) => {
+        const text = input.value.trim();
+        const blockKey = input.dataset.blockKey;
+        const slot = slotMap.get(blockKey);
+        if (!slot) return;
+        if (text) {
+          rowsToUpsert.push({
+            member_name: selectedName,
+            block_key: blockKey,
+            block_date: slot.blockDateStr,
+            block_start: slot.start.toISOString(),
+            task_text: text
+          });
+        } else {
+          keysToDelete.push(blockKey);
+        }
+      });
+
+      if (!rowsToUpsert.length && !keysToDelete.length) return;
+      statusLine.textContent = "할 일 저장 중...";
+
+      if (rowsToUpsert.length) {
+        const { error } = await supabase
+          .from("pomodoro_tasks")
+          .upsert(rowsToUpsert, { onConflict: "member_name,block_key" });
+        if (error) {
+          console.error("saveTasks upsert error", error);
+          statusLine.textContent = "할 일을 저장하지 못했습니다 😢";
+          return;
+        }
+      }
+
+      if (keysToDelete.length) {
+        const { error } = await supabase
+          .from("pomodoro_tasks")
+          .delete()
+          .eq("member_name", selectedName)
+          .in("block_key", keysToDelete);
+        if (error) {
+          console.error("saveTasks delete error", error);
+          statusLine.textContent = "일부 세션의 할 일을 삭제하지 못했습니다 😢";
+          return;
+        }
+      }
+
+      statusLine.textContent = "할 일이 저장되었습니다 ✏️";
+    }
+
+    goTimerFromTaskBtn.addEventListener("click", async () => {
+      await saveTasks();
+      showTimerScreen();
+    });
+
+    async function loadCurrentSessionTasks(info) {
+      const { data, error } = await supabase
+        .from("pomodoro_tasks")
+        .select("*")
+        .eq("block_key", info.blockKey);
+      if (error) {
+        console.error("loadCurrentSessionTasks error", error);
+        sessionTasksEl.innerHTML =
+          '<div class="no-session-tasks">이번 세션 할 일을 불러오지 못했습니다 😢</div>';
+        return;
+      }
+      renderSessionTasks(data || [], info);
+    }
+
+    function renderSessionTasks(rows, info) {
+      sessionTasksEl.innerHTML = "";
+      const timeLabel = formatTimeLabel(info.blockStart);
+      const titleDiv = document.createElement("div");
+      titleDiv.className = "session-tasks-title";
+      titleDiv.textContent = `이번 세션 (${timeLabel}) 할 일 보기`;
+      sessionTasksEl.appendChild(titleDiv);
+
+      if (!rows.length) {
+        const empty = document.createElement("div");
+        empty.className = "no-session-tasks";
+        empty.textContent = "아직 이번 세션에 등록된 할 일이 없습니다.";
+        sessionTasksEl.appendChild(empty);
+        return;
+      }
+
+      const myRow = rows.find((r) => r.member_name === selectedName);
+      const others = rows.filter((r) => r.member_name !== selectedName);
+
+      if (myRow) {
+        const myCard = document.createElement("div");
+        myCard.className = "my-task-card";
+        const header = document.createElement("div");
+        header.className = "my-task-header";
+        header.textContent = `내 할 일 (${myRow.member_name})`;
+        const text = document.createElement("div");
+        text.className = "my-task-text";
+        text.textContent = myRow.task_text;
+        myCard.appendChild(header);
+        myCard.appendChild(text);
+        sessionTasksEl.appendChild(myCard);
+      }
+
+      if (others.length) {
+        const listDiv = document.createElement("div");
+        listDiv.className = "other-tasks-list";
+        others.forEach((row) => {
+          const item = document.createElement("div");
+          item.className = "other-task-item";
+          const nameSpan = document.createElement("span");
+          nameSpan.className = "other-name";
+          nameSpan.textContent = row.member_name;
+          const textSpan = document.createElement("span");
+          textSpan.textContent = row.task_text;
+          item.appendChild(nameSpan);
+          item.appendChild(textSpan);
+          listDiv.appendChild(item);
+        });
+        sessionTasksEl.appendChild(listDiv);
+      }
+    }
+
+    // === 내 할 일 패널 ===
+    myTasksBtn.addEventListener("click", openMyTasksPanel);
+    closeMyTasksBtn.addEventListener("click", () => {
+      myTasksPanel.classList.add("hidden");
+    });
+    saveMyTasksBtn.addEventListener("click", saveMyTasksEdits);
+
+    async function openMyTasksPanel() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+      const today = new Date();
+      const todayStr = today.toISOString().slice(0, 10);
+      const yesterday = new Date(today);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yStr = yesterday.toISOString().slice(0, 10);
+
+      statusLine.textContent = "내 할 일(2일치) 불러오는 중...";
+      const { data, error } = await supabase
+        .from("pomodoro_tasks")
+        .select("*")
+        .eq("member_name", selectedName)
+        .in("block_date", [yStr, todayStr])
+        .order("block_date", { ascending: true })
+        .order("block_start", { ascending: true });
+
+      if (error) {
+        console.error("openMyTasksPanel error", error);
+        statusLine.textContent = "내 할 일을 불러오지 못했습니다 😢";
+        return;
+      }
+
+      statusLine.textContent = "";
+      myTasksData = data || [];
+      renderMyTasksList();
+      myTasksPanel.classList.remove("hidden");
+    }
+
+    function renderMyTasksList() {
+      myTasksListEl.innerHTML = "";
+      myTasksHistoryEl.innerHTML = "";
+      myEditableTasks = [];
+
+      if (!myTasksData.length) {
+        myTasksListEl.innerHTML =
+          '<div style="font-size:0.8rem;color:#999;">최근 2일 내에 작성한 할 일이 없습니다.</div>';
+        return;
+      }
+
+      const now = new Date();
+      const editableRows = [];
+      const pastRows = [];
+
+      myTasksData.forEach((row) => {
+        const start = new Date(row.block_start);
+        if (start >= now) editableRows.push(row);
+        else pastRows.push(row);
+      });
+
+      myEditableTasks = editableRows;
+
+      // 1) 앞으로 남은 세션: 시간만 보여주고 편집
+      if (!editableRows.length) {
+        myTasksListEl.innerHTML =
+          '<div style="font-size:0.8rem;color:#999;">앞으로 남은 세션 할 일이 없습니다.</div>';
+      } else {
+        editableRows.forEach((row, index) => {
+          const rowDiv = document.createElement("div");
+          rowDiv.className = "my-task-row";
+
+          const start = new Date(row.block_start);
+          const timeLabel = start.toLocaleTimeString("ko-KR", {
+            hour: "2-digit",
+            minute: "2-digit"
+          });
+
+          const timeDiv = document.createElement("div");
+          timeDiv.className = "my-task-time";
+          timeDiv.textContent = timeLabel;
+
+          const input = document.createElement("input");
+          input.type = "text";
+          input.className = "my-task-input";
+          input.value = row.task_text || "";
+          input.dataset.index = String(index); // editableRows 기준
+
+          rowDiv.appendChild(timeDiv);
+          rowDiv.appendChild(input);
+          myTasksListEl.appendChild(rowDiv);
+        });
+      }
+
+      // 2) 지난 세션(어제 + 오늘 이전 시간): 예쁘게 표로
+      if (pastRows.length) {
+        const byDate = new Map();
+        pastRows.forEach((row) => {
+          if (!byDate.has(row.block_date)) byDate.set(row.block_date, []);
+          byDate.get(row.block_date).push(row);
+        });
+        const dates = Array.from(byDate.keys()).sort();
+
+        let html = "";
+        dates.forEach((date) => {
+          const label = `📅 ${date}`;
+          html += `<div class="date-label">${label}</div>`;
+          const rowsForDate = byDate
+            .get(date)
+            .slice()
+            .sort(
+              (a, b) =>
+                new Date(a.block_start) - new Date(b.block_start)
+            );
+          html +=
+            '<table><thead><tr><th>시간</th><th>할 일</th></tr></thead><tbody>';
+          rowsForDate.forEach((row) => {
+            const start = new Date(row.block_start);
+            const timeLabel = start.toLocaleTimeString("ko-KR", {
+              hour: "2-digit",
+              minute: "2-digit"
+            });
+            html += `<tr><td class="time-col">${timeLabel}</td><td>${row.task_text || ""}</td></tr>`;
+          });
+          html += "</tbody></table>";
+        });
+
+        myTasksHistoryEl.innerHTML = html;
+      } else {
+        myTasksHistoryEl.innerHTML =
+          '<div style="font-size:0.8rem;color:#bbb;">지난 세션 기록이 없습니다.</div>';
+      }
+    }
+
+    async function saveMyTasksEdits() {
+      if (!selectedName || !myEditableTasks.length) {
+        myTasksPanel.classList.add("hidden");
+        return;
+      }
+
+      const inputs = myTasksListEl.querySelectorAll(".my-task-input");
+      const rowsToUpsert = [];
+      const idsToDelete = [];
+
+      inputs.forEach((input) => {
+        const idx = Number(input.dataset.index);
+        const row = myEditableTasks[idx];
+        const text = input.value.trim();
+        if (!row) return;
+
+        if (text) {
+          rowsToUpsert.push({
+            id: row.id,
+            member_name: selectedName,
+            block_key: row.block_key,
+            block_date: row.block_date,
+            block_start: row.block_start,
+            task_text: text
+          });
+        } else if (row.id) {
+          idsToDelete.push(row.id);
+        }
+      });
+
+      statusLine.textContent = "내 할 일 수정 내용 저장 중...";
+
+      if (rowsToUpsert.length) {
+        const { error } = await supabase
+          .from("pomodoro_tasks")
+          .upsert(rowsToUpsert, { onConflict: "id" });
+        if (error) {
+          console.error("saveMyTasksEdits upsert error", error);
+          statusLine.textContent = "수정 내용을 저장하지 못했습니다 😢";
+          return;
+        }
+      }
+
+      if (idsToDelete.length) {
+        const { error } = await supabase
+          .from("pomodoro_tasks")
+          .delete()
+          .in("id", idsToDelete);
+        if (error) {
+          console.error("saveMyTasksEdits delete error", error);
+          statusLine.textContent = "일부 할 일을 삭제하지 못했습니다 😢";
+          return;
+        }
+      }
+
+      statusLine.textContent = "내 할 일이 저장되었습니다 ✏️";
+      myTasksPanel.classList.add("hidden");
+
+      const info = getCurrentBlock();
+      loadCurrentSessionTasks(info);
+    }
+
     async function joinSession() {
       if (!selectedName) {
         alert("먼저 이름을 선택해 주세요!");
@@ -836,16 +1432,11 @@
       const m = now.getMinutes();
       const s = now.getSeconds();
       const totalSec = m * 60 + s;
-
       let canJoin = false;
 
       if (info.phase === "study") {
-        // 공부 시작 후 5분 이내
-        if (now <= info.joinDeadline) {
-          canJoin = true;
-        }
+        if (now <= info.joinDeadline) canJoin = true;
       } else {
-        // break 상태일 때, 다음 공부 블록 시작 5분 전인지 체크
         const nextStart = new Date(now);
         nextStart.setSeconds(0, 0);
         if (totalSec < 30 * 60) {
@@ -855,9 +1446,7 @@
           nextStart.setMinutes(0);
         }
         const diffMs = nextStart.getTime() - now.getTime();
-        if (diffMs >= 0 && diffMs <= 5 * 60 * 1000) {
-          canJoin = true;
-        }
+        if (diffMs >= 0 && diffMs <= 5 * 60 * 1000) canJoin = true;
       }
 
       if (!canJoin) {
@@ -888,21 +1477,17 @@
     }
 
     async function recordSticker(info) {
-      // 이미 같은 블록에 스티커 있으면 중복 방지
       const { data: existing, error: selError } = await supabase
         .from("pomodoro_sessions")
         .select("id")
         .eq("member_name", selectedName)
         .eq("block_key", info.blockKey)
         .limit(1);
-
       if (selError) {
         console.error("recordSticker select error", selError);
         return;
       }
-      if (existing && existing.length) {
-        return;
-      }
+      if (existing && existing.length) return;
 
       const { error: insError } = await supabase
         .from("pomodoro_sessions")
@@ -914,15 +1499,11 @@
           block_end: info.blockEnd.toISOString(),
           earned_sticker: true
         });
-
-      if (insError) {
-        console.error("recordSticker insert error", insError);
-      }
+      if (insError) console.error("recordSticker insert error", insError);
     }
 
     async function leaveSession() {
       if (!selectedName) return;
-
       const now = new Date();
       const info = getCurrentBlock(now);
       statusLine.textContent = "공부 종료 표시 중...";
@@ -931,7 +1512,6 @@
         .from("pomodoro_active")
         .delete()
         .eq("member_name", selectedName);
-
       if (error) {
         console.error("leaveSession error", error);
         statusLine.textContent = "공부 종료를 표시하지 못했습니다 😢";
@@ -940,7 +1520,6 @@
 
       const isStickerWindow =
         now >= info.blockEnd && now <= info.endDeadline;
-
       if (isStickerWindow) {
         await recordSticker(info);
         statusLine.textContent = "25분 세션 스티커 획득! 🍅";
@@ -948,18 +1527,15 @@
         statusLine.textContent =
           "공부 종료는 되었지만, 스티커 조건은 맞지 않습니다 😢 (시작 전/후 5분 + 종료 후 5분 이내)";
       }
-
       loadActiveMembers();
     }
 
     startBtn.addEventListener("click", joinSession);
     stopBtn.addEventListener("click", leaveSession);
 
-    // --- 10. 최근 2일 스티커 기록 보기 ---
     async function loadRecentStickers() {
       const today = new Date();
       const todayStr = today.toISOString().slice(0, 10);
-
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
       const yStr = yesterday.toISOString().slice(0, 10);
@@ -986,7 +1562,6 @@
 
     function renderStickerTable(rows, { todayStr, yStr }) {
       stickerTableEl.innerHTML = "";
-
       if (!rows.length) {
         stickerTableEl.innerHTML =
           '<div class="no-stickers">최근 2일 스티커 기록이 없습니다.</div>';
@@ -995,16 +1570,12 @@
 
       const byDate = new Map();
       rows.forEach((row) => {
-        if (!byDate.has(row.block_date)) {
-          byDate.set(row.block_date, []);
-        }
+        if (!byDate.has(row.block_date)) byDate.set(row.block_date, []);
         byDate.get(row.block_date).push(row);
       });
 
       const dates = Array.from(byDate.keys()).sort();
-
       let html = "";
-
       dates.forEach((date) => {
         const label =
           date === todayStr
@@ -1012,46 +1583,36 @@
             : date === yStr
             ? `📅 어제 (${date})`
             : `📅 ${date}`;
-
         html += `<div class="date-label">${label}</div>`;
-
         const rowsForDate = byDate.get(date);
         const blocks = new Map();
-
         rowsForDate.forEach((row) => {
           const key = row.block_key;
           const start = new Date(row.block_start);
-          if (!blocks.has(key)) {
-            blocks.set(key, { start, members: [] });
-          }
+          if (!blocks.has(key)) blocks.set(key, { start, members: [] });
           blocks.get(key).members.push(row.member_name);
         });
-
         const entries = Array.from(blocks.values()).sort(
           (a, b) => a.start - b.start
         );
-
         html +=
           '<table><thead><tr><th>세션</th><th>스티커 멤버</th></tr></thead><tbody>';
-
         entries.forEach((b) => {
           const timeLabel = b.start.toLocaleTimeString("ko-KR", {
             hour: "2-digit",
             minute: "2-digit"
           });
-          const names = b.members.join(", ");
-          html += `<tr><td class="time-col">${timeLabel}</td><td>${names}</td></tr>`;
+          html += `<tr><td class="time-col">${timeLabel}</td><td>${b.members.join(
+            ", "
+          )}</td></tr>`;
         });
-
         html += "</tbody></table>";
       });
-
       stickerTableEl.innerHTML = html;
     }
 
     showStickersBtn.addEventListener("click", loadRecentStickers);
 
-    // --- 11. Realtime: 다른 사람 변화 실시간 반영 ---
     supabase
       .channel("pomodoro_active_channel")
       .on(
@@ -1063,20 +1624,14 @@
       )
       .subscribe();
 
-    // --- 12. 초기화: localStorage에 저장된 이름 불러오기 ---
     function init() {
       const savedName = localStorage.getItem("pomodoroName");
       if (savedName && MEMBERS.includes(savedName)) {
         selectedName = savedName;
       }
-
       renderNameButtons("");
-
-      if (selectedName) {
-        showTimerScreen();
-      } else {
-        showNameScreen();
-      }
+      if (selectedName) showTaskScreen();
+      else showNameScreen();
     }
 
     init();
