@@ -208,12 +208,44 @@
       background: radial-gradient(circle at top, #fffaf4, #ffeaf5);
       box-shadow: 0 12px 30px rgba(255, 140, 184, 0.6);
       position: relative;
+      overflow: hidden;
     }
 
     .timer-text {
       font-size: 3rem;
       font-weight: 700;
       color: #333;
+      position: relative;
+      z-index: 2;
+    }
+
+    .emoji-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .emoji-bubble {
+      position: absolute;
+      opacity: 0.2;
+      animation: floatEmoji 8s ease-in-out infinite alternate;
+      filter: blur(0.2px);
+    }
+
+    @keyframes floatEmoji {
+      0% {
+        transform: translate(var(--x-start), var(--y-start));
+        opacity: 0.16;
+      }
+      50% {
+        opacity: 0.28;
+      }
+      100% {
+        transform: translate(var(--x-end), var(--y-end));
+        opacity: 0.12;
+      }
     }
 
     .timer-sub {
@@ -229,6 +261,11 @@
       margin-top: 12px;
       flex-wrap: wrap;
       justify-content: center;
+    }
+
+    .stickers-control {
+      margin-top: 8px;
+      text-align: center;
     }
 
     .status-line {
@@ -274,6 +311,40 @@
       font-size: 0.78rem;
       color: #999;
       margin-top: 6px;
+    }
+
+    .sticker-table {
+      margin-top: 14px;
+      font-size: 0.85rem;
+    }
+
+    .sticker-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .sticker-table th,
+    .sticker-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #f0e4ff;
+      text-align: left;
+    }
+
+    .sticker-table th {
+      background: #faf7ff;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .sticker-table .time-col {
+      white-space: nowrap;
+      width: 80px;
+    }
+
+    .no-stickers {
+      font-size: 0.85rem;
+      color: #aaa;
+      text-align: left;
     }
 
     @media (max-width: 600px) {
@@ -337,6 +408,7 @@
 
       <div class="timer-wrapper">
         <div class="timer-circle">
+          <div class="emoji-layer" id="emojiLayer"></div>
           <div class="timer-text" id="timerDisplay">--:--</div>
         </div>
         <div class="timer-sub" id="timerSubText">
@@ -350,6 +422,11 @@
             ⏹ 끝내기 (공부 종료)
           </button>
         </div>
+        <div class="stickers-control">
+          <button id="showStickersBtn" class="secondary-btn">
+            📊 오늘 스티커 기록 보기
+          </button>
+        </div>
         <div class="status-line" id="statusLine"></div>
       </div>
 
@@ -357,9 +434,13 @@
         <div class="active-title">지금 같이 공부 중인 뽀모 멤버 🍅</div>
         <div id="activeNames" class="active-names"></div>
         <div class="hint-line">
-          ※ &ldquo;시작하기&rdquo;를 누르면 이름이 나타나고, &ldquo;끝내기&rdquo;를 누르면 사라집니다.
+          ※ &ldquo;시작하기&rdquo;를 누르면 이름이 올라가고,
+          &ldquo;끝내기&rdquo;를 눌러야 스티커 조건 체크됩니다.<br />
+          (시작: 공부 시작 후 5분 이내 / 종료: 공부 끝난 후 5분 이내)
         </div>
       </div>
+
+      <div class="sticker-table" id="stickerTable"></div>
     </div>
   </div>
 
@@ -494,77 +575,41 @@
     const stopBtn = document.getElementById("stopBtn");
     const statusLine = document.getElementById("statusLine");
     const activeNamesEl = document.getElementById("activeNames");
+    const emojiLayerEl = document.getElementById("emojiLayer");
+    const showStickersBtn = document.getElementById("showStickersBtn");
+    const stickerTableEl = document.getElementById("stickerTable");
 
     let selectedName = null;
-
-    // --- 4. 이름 선택 UI 만들기 ---
     let selectedButton = null;
 
-    function renderNameButtons(filter = "") {
-      nameListEl.innerHTML = "";
-      const lower = filter.trim().toLowerCase();
+    // --- 4. 현재 블록 정보 계산 (정각/30분 기준) ---
+    function getCurrentBlock(now = new Date()) {
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const totalSec = m * 60 + s;
 
-      MEMBERS.forEach((name) => {
-        if (lower && !name.toLowerCase().includes(lower)) return;
+      const blockStart = new Date(now);
+      blockStart.setSeconds(0, 0);
 
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "name-btn";
-        btn.textContent = name;
-
-        if (selectedName === name) {
-          btn.classList.add("selected");
-          selectedButton = btn;
-        }
-
-        btn.addEventListener("click", () => {
-          selectedName = name;
-          localStorage.setItem("pomodoroName", selectedName);
-          if (selectedButton) selectedButton.classList.remove("selected");
-          btn.classList.add("selected");
-          selectedButton = btn;
-        });
-
-        nameListEl.appendChild(btn);
-      });
-
-      if (!nameListEl.innerHTML) {
-        nameListEl.innerHTML =
-          '<div style="font-size:0.85rem;color:#999;">검색 결과가 없습니다.</div>';
+      if (totalSec < 30 * 60) {
+        blockStart.setMinutes(0);
+      } else {
+        blockStart.setMinutes(30);
       }
+
+      const blockEnd = new Date(blockStart.getTime() + 25 * 60 * 1000);
+      const joinDeadline = new Date(blockStart.getTime() + 5 * 60 * 1000);
+      const endDeadline = new Date(blockEnd.getTime() + 5 * 60 * 1000);
+
+      const phase = now < blockEnd ? "study" : "break";
+      const blockKey = blockStart.toISOString();
+      const blockDateStr = blockStart.toISOString().slice(0, 10);
+
+      return { phase, blockStart, blockEnd, joinDeadline, endDeadline, blockKey, blockDateStr };
     }
 
-    nameSearchEl.addEventListener("input", (e) => {
-      renderNameButtons(e.target.value);
-    });
-
-    // --- 5. 화면 전환 ---
-    function showNameScreen() {
-      nameScreen.classList.remove("hidden");
-      timerScreen.classList.add("hidden");
-      statusLine.textContent = "";
-    }
-
-    function showTimerScreen() {
-      if (!selectedName) {
-        alert("먼저 이름을 선택해 주세요!");
-        return;
-      }
-      currentNameEl.textContent = selectedName;
-      nameScreen.classList.add("hidden");
-      timerScreen.classList.remove("hidden");
-      statusLine.textContent = "";
-      loadActiveMembers();
-    }
-
-    goTimerBtn.addEventListener("click", showTimerScreen);
-
-    changeNameBtn.addEventListener("click", () => {
-      leaveSession(); // 이름 바꾸면 자동으로 세션에서 빠지게
-      showNameScreen();
-    });
-
-    // --- 6. 타이머 (정각 / 30분 기준 25+5) ---
+    // --- 5. 타이머 업데이트 ---
     function updateTimer() {
       const now = new Date();
       const m = now.getMinutes();
@@ -572,11 +617,8 @@
       const totalSec = m * 60 + s;
 
       let nextBoundary;
-      let phase; // "study" or "break"
+      let phase;
 
-      // 각 시(hour) 안에서:
-      // 00:00~24:59  공부, 25:00~29:59 쉬는시간
-      // 30:00~54:59  공부, 55:00~59:59 쉬는시간
       if (totalSec < 25 * 60) {
         phase = "study";
         nextBoundary = 25 * 60;
@@ -615,7 +657,72 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 
-    // --- 7. Supabase: 현재 공부중 멤버 불러오기 ---
+    // --- 6. 이름 선택 UI ---
+    function renderNameButtons(filter = "") {
+      nameListEl.innerHTML = "";
+      const lower = filter.trim().toLowerCase();
+
+      MEMBERS.forEach((name) => {
+        if (lower && !name.toLowerCase().includes(lower)) return;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "name-btn";
+        btn.textContent = name;
+
+        if (selectedName === name) {
+          btn.classList.add("selected");
+          selectedButton = btn;
+        }
+
+        btn.addEventListener("click", () => {
+          selectedName = name;
+          localStorage.setItem("pomodoroName", selectedName);
+          if (selectedButton) selectedButton.classList.remove("selected");
+          btn.classList.add("selected");
+          selectedButton = btn;
+        });
+
+        nameListEl.appendChild(btn);
+      });
+
+      if (!nameListEl.innerHTML) {
+        nameListEl.innerHTML =
+          '<div style="font-size:0.85rem;color:#999;">검색 결과가 없습니다.</div>';
+      }
+    }
+
+    nameSearchEl.addEventListener("input", (e) => {
+      renderNameButtons(e.target.value);
+    });
+
+    // --- 7. 화면 전환 ---
+    function showNameScreen() {
+      nameScreen.classList.remove("hidden");
+      timerScreen.classList.add("hidden");
+      statusLine.textContent = "";
+    }
+
+    function showTimerScreen() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+      currentNameEl.textContent = selectedName;
+      nameScreen.classList.add("hidden");
+      timerScreen.classList.remove("hidden");
+      statusLine.textContent = "";
+      loadActiveMembers();
+    }
+
+    goTimerBtn.addEventListener("click", showTimerScreen);
+
+    changeNameBtn.addEventListener("click", () => {
+      leaveSession(); // 이름 바꿀 때는 세션에서 빠지게
+      showNameScreen();
+    });
+
+    // --- 8. Active 멤버 + 이모지 플로팅 ---
     async function loadActiveMembers() {
       const { data, error } = await supabase
         .from("pomodoro_active")
@@ -636,6 +743,7 @@
       if (!rows.length) {
         activeNamesEl.innerHTML =
           '<span style="font-size:0.85rem;color:#aaa;">아직 아무도 공부를 시작하지 않았어요.</span>';
+        renderEmojiLayer([]);
         return;
       }
 
@@ -648,17 +756,65 @@
         chip.textContent = row.member_name;
         activeNamesEl.appendChild(chip);
       });
+
+      renderEmojiLayer(rows);
     }
 
-    // --- 8. 시작 / 끝내기 ---
+    function renderEmojiLayer(rows) {
+      emojiLayerEl.innerHTML = "";
+      const maxEmojis = Math.min(rows.length, 10);
+
+      for (let i = 0; i < maxEmojis; i++) {
+        const row = rows[i];
+        const glyphs = Array.from(row.member_name);
+        const emoji = glyphs[glyphs.length - 1] || "🍅";
+
+        const span = document.createElement("span");
+        span.className = "emoji-bubble";
+        span.textContent = emoji;
+
+        const xStart = (Math.random() * 140 - 70).toFixed(0) + "px";
+        const yStart = (Math.random() * 140 - 70).toFixed(0) + "px";
+        const xEnd = (Math.random() * 140 - 70).toFixed(0) + "px";
+        const yEnd = (Math.random() * 140 - 70).toFixed(0) + "px";
+
+        span.style.setProperty("--x-start", xStart);
+        span.style.setProperty("--y-start", yStart);
+        span.style.setProperty("--x-end", xEnd);
+        span.style.setProperty("--y-end", yEnd);
+        span.style.left = "50%";
+        span.style.top = "50%";
+        span.style.fontSize = (Math.random() * 12 + 18).toFixed(0) + "px";
+        span.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
+
+        emojiLayerEl.appendChild(span);
+      }
+    }
+
+    // --- 9. 시작 / 끝내기 + 스티커 로직 ---
     async function joinSession() {
       if (!selectedName) {
         alert("먼저 이름을 선택해 주세요!");
         return;
       }
+
+      const info = getCurrentBlock();
+      const now = new Date();
+
+      if (info.phase !== "study") {
+        statusLine.textContent =
+          "지금은 공부 시간이 아닙니다. 공부 시간(25분) 때만 시작할 수 있어요 ☕";
+        return;
+      }
+
+      if (now > info.joinDeadline) {
+        statusLine.textContent =
+          "공부 시작 후 5분이 지나 참가할 수 없습니다 😢 다음 세션을 기다려 주세요.";
+        return;
+      }
+
       statusLine.textContent = "공부 시작 표시 중...";
 
-      // 같은 이름 중복 방지: 기존 행 삭제 후 새로 insert
       await supabase
         .from("pomodoro_active")
         .delete()
@@ -673,12 +829,49 @@
         statusLine.textContent = "공부 시작을 표시하지 못했습니다 😢";
         return;
       }
-      statusLine.textContent = "지금 공부 중으로 표시되었습니다 💪";
+      statusLine.textContent =
+        "지금 공부 중으로 표시되었습니다 💪 (스티커 조건: 시작 5분 이내 + 종료 5분 이내)";
       loadActiveMembers();
+    }
+
+    async function recordSticker(info, now) {
+      // 이미 같은 블록에 스티커 있으면 중복 방지
+      const { data: existing, error: selError } = await supabase
+        .from("pomodoro_sessions")
+        .select("id")
+        .eq("member_name", selectedName)
+        .eq("block_key", info.blockKey)
+        .limit(1);
+
+      if (selError) {
+        console.error("recordSticker select error", selError);
+        return;
+      }
+      if (existing && existing.length) {
+        return;
+      }
+
+      const { error: insError } = await supabase
+        .from("pomodoro_sessions")
+        .insert({
+          member_name: selectedName,
+          block_key: info.blockKey,
+          block_date: info.blockDateStr,
+          block_start: info.blockStart.toISOString(),
+          block_end: info.blockEnd.toISOString(),
+          earned_sticker: true
+        });
+
+      if (insError) {
+        console.error("recordSticker insert error", insError);
+      }
     }
 
     async function leaveSession() {
       if (!selectedName) return;
+
+      const info = getCurrentBlock();
+      const now = new Date();
       statusLine.textContent = "공부 종료 표시 중...";
 
       const { error } = await supabase
@@ -691,14 +884,90 @@
         statusLine.textContent = "공부 종료를 표시하지 못했습니다 😢";
         return;
       }
-      statusLine.textContent = "공부 종료 처리되었습니다 ✅";
+
+      const isStickerWindow =
+        now >= info.blockEnd && now <= info.endDeadline && info.phase === "break";
+
+      if (isStickerWindow) {
+        await recordSticker(info, now);
+        statusLine.textContent = "25분 세션 스티커 획득! 🍅";
+      } else {
+        statusLine.textContent =
+          "공부 종료는 되었지만, 스티커 조건은 맞지 않습니다 😢 (시작 5분 이내 + 종료 후 5분 이내)";
+      }
+
       loadActiveMembers();
     }
 
     startBtn.addEventListener("click", joinSession);
     stopBtn.addEventListener("click", leaveSession);
 
-    // --- 9. Realtime: 다른 사람 변화 실시간 반영 ---
+    // --- 10. 오늘 스티커 기록 보기 ---
+    async function loadTodayStickers() {
+      const today = new Date();
+      const todayStr = today.toISOString().slice(0, 10);
+
+      statusLine.textContent = "오늘 스티커 기록 불러오는 중...";
+
+      const { data, error } = await supabase
+        .from("pomodoro_sessions")
+        .select("*")
+        .eq("block_date", todayStr)
+        .order("block_start", { ascending: true })
+        .order("member_name", { ascending: true });
+
+      if (error) {
+        console.error("loadTodayStickers error", error);
+        statusLine.textContent = "스티커 기록을 불러오지 못했습니다 😢";
+        return;
+      }
+
+      statusLine.textContent = "";
+      renderStickerTable(data || []);
+    }
+
+    function renderStickerTable(rows) {
+      stickerTableEl.innerHTML = "";
+
+      if (!rows.length) {
+        stickerTableEl.innerHTML =
+          '<div class="no-stickers">아직 오늘 스티커 기록이 없습니다.</div>';
+        return;
+      }
+
+      const blocks = new Map();
+      rows.forEach((row) => {
+        const key = row.block_key;
+        const start = new Date(row.block_start);
+        if (!blocks.has(key)) {
+          blocks.set(key, { start, members: [] });
+        }
+        blocks.get(key).members.push(row.member_name);
+      });
+
+      const entries = Array.from(blocks.values()).sort(
+        (a, b) => a.start - b.start
+      );
+
+      let html =
+        '<table><thead><tr><th>세션</th><th>스티커 멤버</th></tr></thead><tbody>';
+
+      entries.forEach((b) => {
+        const timeLabel = b.start.toLocaleTimeString("ko-KR", {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+        const names = b.members.join(", ");
+        html += `<tr><td class="time-col">${timeLabel}</td><td>${names}</td></tr>`;
+      });
+
+      html += "</tbody></table>";
+      stickerTableEl.innerHTML = html;
+    }
+
+    showStickersBtn.addEventListener("click", loadTodayStickers);
+
+    // --- 11. Realtime: 다른 사람 변화 실시간 반영 ---
     supabase
       .channel("pomodoro_active_channel")
       .on(
@@ -710,7 +979,7 @@
       )
       .subscribe();
 
-    // --- 10. 초기화: localStorage에 저장된 이름 불러오기 ---
+    // --- 12. 초기화: localStorage에 저장된 이름 불러오기 ---
     function init() {
       const savedName = localStorage.getItem("pomodoroName");
       if (savedName && MEMBERS.includes(savedName)) {
