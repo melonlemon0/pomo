@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>뽀모 실시간 타이머 🍅</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: radial-gradient(circle at top, #fff4e6, #ffeef7);
+    }
+
+    .app {
+      width: 100%;
+      max-width: 720px;
+      margin: 24px 12px;
+      background: #ffffffcc;
+      border-radius: 20px;
+      padding: 20px 18px 18px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid #ffd6e0;
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.7rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .screen {
+      margin-top: 8px;
+    }
+
+    /* 이름 선택 화면 */
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    #nameSearch {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #e3d7ff;
+      font-size: 0.9rem;
+      outline: none;
+      margin-bottom: 10px;
+      background: #faf7ff;
+    }
+
+    #nameSearch:focus {
+      border-color: #ff9ecb;
+      box-shadow: 0 0 0 3px rgba(255, 158, 203, 0.25);
+      background: #fff;
+    }
+
+    .name-list {
+      max-height: 360px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 6px;
+    }
+
+    .name-btn {
+      border-radius: 999px;
+      border: 1px solid #f0e4ff;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      text-align: left;
+      background: #ffffff;
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s, transform 0.1s,
+        border-color 0.15s;
+    }
+
+    .name-btn:hover {
+      background: #fff4f9;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.07);
+      transform: translateY(-1px);
+    }
+
+    .name-btn.selected {
+      background: #ffe1f1;
+      border-color: #ff9ecb;
+      box-shadow: 0 0 0 2px rgba(255, 158, 203, 0.35);
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-weight: 600;
+      transition: transform 0.08s, box-shadow 0.08s, opacity 0.08s;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #ff9ecb, #ffd884);
+      color: #4b2530;
+      box-shadow: 0 8px 16px rgba(255, 140, 184, 0.5);
+    }
+
+    .secondary-btn {
+      background: #f4ecff;
+      color: #5a4a7a;
+      box-shadow: 0 4px 10px rgba(90, 74, 122, 0.15);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn:active,
+    .secondary-btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+      opacity: 0.9;
+    }
+
+    .name-footer {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    /* 타이머 화면 */
+    .timer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .current-name {
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .phase-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e5f6ff;
+      color: #15536b;
+    }
+
+    .phase-label.study {
+      background: #ffe5ef;
+      color: #8c2649;
+    }
+
+    .phase-label.break {
+      background: #e6ffe8;
+      color: #166434;
+    }
+
+    .timer-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0 14px;
+    }
+
+    .timer-circle {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 4px solid #ffcfe0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #fffaf4, #ffeaf5);
+      box-shadow: 0 12px 30px rgba(255, 140, 184, 0.6);
+      position: relative;
+    }
+
+    .timer-text {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .timer-sub {
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .status-line {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #777;
+      min-height: 18px;
+      text-align: center;
+    }
+
+    .active-names-section {
+      margin-top: 14px;
+    }
+
+    .active-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .active-names {
+      min-height: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .active-chip {
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.85rem;
+      background: #fff4fa;
+      border: 1px solid #ffd6e8;
+    }
+
+    .active-chip.me {
+      background: #ffe4f2;
+      border-color: #ff9ecb;
+      font-weight: 600;
+    }
+
+    .hint-line {
+      font-size: 0.78rem;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        margin: 16px 8px;
+        padding: 16px 12px 14px;
+      }
+
+      .timer-circle {
+        width: 220px;
+        height: 220px;
+      }
+
+      .timer-text {
+        font-size: 2.4rem;
+      }
+
+      .name-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>뽀모 실시간 타이머 🍅</h1>
+    <div class="subtitle">
+      정각 / 30분에 같이 25분 공부 + 5분 쉬는 타이머 💪
+    </div>
+
+    <!-- 이름 선택 화면 -->
+    <div id="name-screen" class="screen">
+      <div class="section-title">1. 이름 선택하기</div>
+      <input
+        id="nameSearch"
+        type="text"
+        placeholder="이름 또는 이모지 검색..."
+      />
+      <div id="nameList" class="name-list"></div>
+      <div class="name-footer">
+        선택 후 &ldquo;타이머로 가기&rdquo; 버튼을 눌러 주세요 :)
+      </div>
+      <div style="margin-top: 10px; text-align: center;">
+        <button id="goTimerBtn" class="primary-btn">
+          ⏱ 타이머로 가기
+        </button>
+      </div>
+    </div>
+
+    <!-- 타이머 화면 -->
+    <div id="timer-screen" class="screen hidden">
+      <div class="timer-header">
+        <div class="current-name">
+          현재 접속: <span id="currentName"></span>
+        </div>
+        <div class="phase-label" id="phaseLabel">계산 중...</div>
+        <button id="changeNameBtn" class="secondary-btn">
+          🔄 이름 변경
+        </button>
+      </div>
+
+      <div class="timer-wrapper">
+        <div class="timer-circle">
+          <div class="timer-text" id="timerDisplay">--:--</div>
+        </div>
+        <div class="timer-sub" id="timerSubText">
+          정각/30분 기준으로 자동으로 맞춰집니다.
+        </div>
+        <div class="timer-controls">
+          <button id="startBtn" class="primary-btn">
+            ▶️ 시작하기 (공부 중 표시)
+          </button>
+          <button id="stopBtn" class="secondary-btn">
+            ⏹ 끝내기 (공부 종료)
+          </button>
+        </div>
+        <div class="status-line" id="statusLine"></div>
+      </div>
+
+      <div class="active-names-section">
+        <div class="active-title">지금 같이 공부 중인 뽀모 멤버 🍅</div>
+        <div id="activeNames" class="active-names"></div>
+        <div class="hint-line">
+          ※ &ldquo;시작하기&rdquo;를 누르면 이름이 나타나고, &ldquo;끝내기&rdquo;를 누르면 사라집니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    // --- 1. Supabase 설정 (당신 프로젝트) ---
+    const SUPABASE_URL = "https://upiobealvympxbypfmkc.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwaW9iZWFsdnltcHhieXBmbWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzNzYxNDIsImV4cCI6MjA3ODk1MjE0Mn0.mLvGyy-eMWr-ow2b2USMg7PXKq2EUfK1fyJEsdGThKw";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // --- 2. 뽀모 멤버 목록 ---
+    const MEMBERS = [
+      "박미선🧶",
+      "고주연🎬",
+      "문하영🌙",
+      "전은석🍕",
+      "이아로🐰",
+      "김태훈🪵",
+      "박정현🥁",
+      "윤장혁🦇",
+      "김민지🚈",
+      "이정철🌵",
+      "권도이🍟",
+      "임가영🔮",
+      "정성우🥰",
+      "김영서🐾",
+      "최문영🍎",
+      "이경표🎫",
+      "김성환🍘",
+      "성규현♾️",
+      "박은지🦚",
+      "박종혁🍷",
+      "김정현🎻",
+      "송창호🪖",
+      "박민석🛏️",
+      "이예원🎭",
+      "조재현🍍",
+      "조서영🇬🇧",
+      "고병찬⚽️",
+      "정민영🦦",
+      "조성현🍵",
+      "이지은💞",
+      "황새벽🌆",
+      "조정범🫒",
+      "박영훈👻",
+      "강민정🌽",
+      "박재진🌊",
+      "이승호🎲",
+      "김민정🍨",
+      "전하윤🧀",
+      "이남수👇",
+      "김은성🐱",
+      "김지환🔮",
+      "이재원💵",
+      "정연수🦭",
+      "김도훈🎖️",
+      "이금비🌧",
+      "최지원🕳",
+      "박민경🍉",
+      "권규범🐆",
+      "박대헌🥋",
+      "정다희🐿️",
+      "김창훈🪟",
+      "조충연🐦‍🔥",
+      "최다예🍭",
+      "최서영👍",
+      "노소현🐢",
+      "박우빈☔️",
+      "이가현🥞",
+      "배지은💍",
+      "정계훈🥚",
+      "인치광💡",
+      "강태훈💪",
+      "박경서🌅",
+      "박준표🐕",
+      "조원창🛡️",
+      "지슬아🧊",
+      "차민구♠️",
+      "양진희🐑",
+      "박혜연🎊",
+      "서원두☕️",
+      "안보현😎",
+      "우은지🍒",
+      "김민섭🕶️",
+      "박미선🐳",
+      "여지원🕹️",
+      "유현빈☀️",
+      "이현준🍫",
+      "이현지💌",
+      "허태웅🏀",
+      "류경호👮",
+      "박동건☄️",
+      "고희원😄",
+      "김기원⚪",
+      "김예원🐥",
+      "김준형🤖",
+      "김진곤🍙",
+      "김진수💦",
+      "김태경🌱",
+      "민지현🍏",
+      "백하윤❄️",
+      "송영훈💿",
+      "양소연🏟",
+      "윤신혜😆",
+      "윤주성🏰",
+      "이준호👣",
+      "이창현🐌",
+      "정병혁🏸",
+      "정예은🧇",
+      "정유민🐹",
+      "조민제🐦",
+      "최영인📀",
+      "하유청🐶",
+      "홍승현🍳"
+    ];
+
+    // --- 3. DOM 요소 ---
+    const nameScreen = document.getElementById("name-screen");
+    const timerScreen = document.getElementById("timer-screen");
+    const nameListEl = document.getElementById("nameList");
+    const nameSearchEl = document.getElementById("nameSearch");
+    const goTimerBtn = document.getElementById("goTimerBtn");
+    const currentNameEl = document.getElementById("currentName");
+    const changeNameBtn = document.getElementById("changeNameBtn");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerSubText = document.getElementById("timerSubText");
+    const phaseLabel = document.getElementById("phaseLabel");
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const statusLine = document.getElementById("statusLine");
+    const activeNamesEl = document.getElementById("activeNames");
+
+    let selectedName = null;
+
+    // --- 4. 이름 선택 UI 만들기 ---
+    let selectedButton = null;
+
+    function renderNameButtons(filter = "") {
+      nameListEl.innerHTML = "";
+      const lower = filter.trim().toLowerCase();
+
+      MEMBERS.forEach((name) => {
+        if (lower && !name.toLowerCase().includes(lower)) return;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "name-btn";
+        btn.textContent = name;
+
+        if (selectedName === name) {
+          btn.classList.add("selected");
+          selectedButton = btn;
+        }
+
+        btn.addEventListener("click", () => {
+          selectedName = name;
+          localStorage.setItem("pomodoroName", selectedName);
+          if (selectedButton) selectedButton.classList.remove("selected");
+          btn.classList.add("selected");
+          selectedButton = btn;
+        });
+
+        nameListEl.appendChild(btn);
+      });
+
+      if (!nameListEl.innerHTML) {
+        nameListEl.innerHTML =
+          '<div style="font-size:0.85rem;color:#999;">검색 결과가 없습니다.</div>';
+      }
+    }
+
+    nameSearchEl.addEventListener("input", (e) => {
+      renderNameButtons(e.target.value);
+    });
+
+    // --- 5. 화면 전환 ---
+    function showNameScreen() {
+      nameScreen.classList.remove("hidden");
+      timerScreen.classList.add("hidden");
+      statusLine.textContent = "";
+    }
+
+    function showTimerScreen() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+      currentNameEl.textContent = selectedName;
+      nameScreen.classList.add("hidden");
+      timerScreen.classList.remove("hidden");
+      statusLine.textContent = "";
+      loadActiveMembers();
+    }
+
+    goTimerBtn.addEventListener("click", showTimerScreen);
+
+    changeNameBtn.addEventListener("click", () => {
+      leaveSession(); // 이름 바꾸면 자동으로 세션에서 빠지게
+      showNameScreen();
+    });
+
+    // --- 6. 타이머 (정각 / 30분 기준 25+5) ---
+    function updateTimer() {
+      const now = new Date();
+      const m = now.getMinutes();
+      const s = now.getSeconds();
+      const totalSec = m * 60 + s;
+
+      let nextBoundary;
+      let phase; // "study" or "break"
+
+      // 각 시(hour) 안에서:
+      // 00:00~24:59  공부, 25:00~29:59 쉬는시간
+      // 30:00~54:59  공부, 55:00~59:59 쉬는시간
+      if (totalSec < 25 * 60) {
+        phase = "study";
+        nextBoundary = 25 * 60;
+      } else if (totalSec < 30 * 60) {
+        phase = "break";
+        nextBoundary = 30 * 60;
+      } else if (totalSec < 55 * 60) {
+        phase = "study";
+        nextBoundary = 55 * 60;
+      } else {
+        phase = "break";
+        nextBoundary = 60 * 60;
+      }
+
+      const remaining = nextBoundary - totalSec;
+      const mm = Math.floor(remaining / 60);
+      const ss = remaining % 60;
+
+      const mmStr = String(mm).padStart(2, "0");
+      const ssStr = String(ss).padStart(2, "0");
+      timerDisplay.textContent = `${mmStr}:${ssStr}`;
+
+      if (phase === "study") {
+        phaseLabel.textContent = "공부 시간 🍅 (25분)";
+        phaseLabel.classList.add("study");
+        phaseLabel.classList.remove("break");
+        timerSubText.textContent = "정각/30분 기준 25분 공부 중입니다.";
+      } else {
+        phaseLabel.textContent = "쉬는 시간 ☕ (5분)";
+        phaseLabel.classList.add("break");
+        phaseLabel.classList.remove("study");
+        timerSubText.textContent = "5분 휴식 타임! 물 마시고 스트레칭 🌿";
+      }
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // --- 7. Supabase: 현재 공부중 멤버 불러오기 ---
+    async function loadActiveMembers() {
+      const { data, error } = await supabase
+        .from("pomodoro_active")
+        .select("*")
+        .order("joined_at", { ascending: true });
+
+      if (error) {
+        console.error("loadActiveMembers error", error);
+        statusLine.textContent = "멤버 목록을 불러오지 못했습니다 😢";
+        return;
+      }
+
+      renderActiveMembers(data || []);
+    }
+
+    function renderActiveMembers(rows) {
+      activeNamesEl.innerHTML = "";
+      if (!rows.length) {
+        activeNamesEl.innerHTML =
+          '<span style="font-size:0.85rem;color:#aaa;">아직 아무도 공부를 시작하지 않았어요.</span>';
+        return;
+      }
+
+      rows.forEach((row) => {
+        const chip = document.createElement("div");
+        chip.className = "active-chip";
+        if (row.member_name === selectedName) {
+          chip.classList.add("me");
+        }
+        chip.textContent = row.member_name;
+        activeNamesEl.appendChild(chip);
+      });
+    }
+
+    // --- 8. 시작 / 끝내기 ---
+    async function joinSession() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+      statusLine.textContent = "공부 시작 표시 중...";
+
+      // 같은 이름 중복 방지: 기존 행 삭제 후 새로 insert
+      await supabase
+        .from("pomodoro_active")
+        .delete()
+        .eq("member_name", selectedName);
+
+      const { error } = await supabase
+        .from("pomodoro_active")
+        .insert({ member_name: selectedName });
+
+      if (error) {
+        console.error("joinSession error", error);
+        statusLine.textContent = "공부 시작을 표시하지 못했습니다 😢";
+        return;
+      }
+      statusLine.textContent = "지금 공부 중으로 표시되었습니다 💪";
+      loadActiveMembers();
+    }
+
+    async function leaveSession() {
+      if (!selectedName) return;
+      statusLine.textContent = "공부 종료 표시 중...";
+
+      const { error } = await supabase
+        .from("pomodoro_active")
+        .delete()
+        .eq("member_name", selectedName);
+
+      if (error) {
+        console.error("leaveSession error", error);
+        statusLine.textContent = "공부 종료를 표시하지 못했습니다 😢";
+        return;
+      }
+      statusLine.textContent = "공부 종료 처리되었습니다 ✅";
+      loadActiveMembers();
+    }
+
+    startBtn.addEventListener("click", joinSession);
+    stopBtn.addEventListener("click", leaveSession);
+
+    // --- 9. Realtime: 다른 사람 변화 실시간 반영 ---
+    supabase
+      .channel("pomodoro_active_channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "pomodoro_active" },
+        () => {
+          loadActiveMembers();
+        }
+      )
+      .subscribe();
+
+    // --- 10. 초기화: localStorage에 저장된 이름 불러오기 ---
+    function init() {
+      const savedName = localStorage.getItem("pomodoroName");
+      if (savedName && MEMBERS.includes(savedName)) {
+        selectedName = savedName;
+      }
+
+      renderNameButtons("");
+
+      if (selectedName) {
+        showTimerScreen();
+      } else {
+        showNameScreen();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
