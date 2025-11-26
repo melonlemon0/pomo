@@ -651,8 +651,8 @@
       <div class="task-planner">
         <div class="task-planner-title">2. 오늘 다가오는 세션 할 일 적기 ✏️</div>
         <div class="task-planner-sub">
-          지금 시간 기준 <strong>다음 10개 공부 세션(5시간)</strong>까지 미리 적을 수 있어요.<br />
-          예: 9:15에 들어오면 9:30, 10:00, 10:30 ... 순서로 보여줍니다.
+          지금 시간 기준 <strong>이번 세션 + 다음 9개 공부 세션(총 10개)</strong>까지 미리 적을 수 있어요.<br />
+          예: 9:15에 들어오면 <strong>9:00, 9:30, 10:00, 10:30 ...</strong> 순서로 보여줍니다.
         </div>
         <div id="taskSlots" class="task-slots"></div>
         <div class="task-save-row">
@@ -696,10 +696,10 @@
         </div>
         <div class="extra-controls">
           <button id="myTasksBtn" class="secondary-btn">
-            📝 내 할 일 (2일치)
+            📝 내 할 일
           </button>
           <button id="showStickersBtn" class="secondary-btn">
-            📊 최근 2일 스티커
+            📊 스티커 기록
           </button>
         </div>
         <div class="status-line" id="statusLine"></div>
@@ -717,7 +717,7 @@
           </button>
         </div>
         <div class="my-tasks-sub">
-          위에는 <strong>앞으로 남은 세션</strong>만 시간별로 편집할 수 있고,<br />
+          위에는 <strong>현재 세션 + 앞으로 남은 세션</strong>만 시간별로 편집할 수 있고,<br />
           아래 표에는 <strong>이미 지난 세션/어제 기록</strong>이 정리됩니다.
         </div>
         <div id="myTasksList" class="my-tasks-list"></div>
@@ -734,9 +734,9 @@
         <div class="active-title">지금 같이 공부 중인 뽀모 멤버 🍅</div>
         <div id="activeNames" class="active-names"></div>
         <div class="hint-line">
-          ※ &ldquo;시작하기&rdquo;를 누르면 이름이 올라가고,
-          &ldquo;끝내기&rdquo;를 눌러야 스티커 조건 체크됩니다.<br />
-          (시작: 공부 시작 전 5분 ~ 시작 후 5분 / 종료: 공부 끝난 후 5분 이내)
+          ※ &ldquo;시작하기&rdquo;를 누르면 이름이 올라가고,<br />
+          &ldquo;끝내기&rdquo;를 눌러야 <strong>스티커 조건</strong>의 종료 시간 체크됩니다.<br />
+          (스티커: 세션 시작 전/후 5분 + 종료 후 5분 이내)
         </div>
       </div>
 
@@ -778,7 +778,7 @@
     const goTaskBtn = document.getElementById("goTaskBtn");
 
     const currentNameTaskEl = document.getElementById("currentNameTask");
-    const backToNameBtn = document.getElementById("backToNameBtn");
+       const backToNameBtn = document.getElementById("backToNameBtn");
     const goTimerFromTaskBtn = document.getElementById("goTimerFromTaskBtn");
     const taskSlotsEl = document.getElementById("taskSlots");
 
@@ -811,6 +811,7 @@
     let myTasksData = [];
     let myEditableTasks = [];
 
+    // 현재 세션 정보
     function getCurrentBlock(now = new Date()) {
       const m = now.getMinutes();
       const s = now.getSeconds();
@@ -846,6 +847,34 @@
     function getNextStudyStart(now = new Date()) {
       const info = getCurrentBlock(now);
       return new Date(info.blockStart.getTime() + 30 * 60 * 1000);
+    }
+
+    function getSessionWindowForJoin(joinedAtInput) {
+      const d = new Date(joinedAtInput);
+      const sessionStart = new Date(d);
+      sessionStart.setSeconds(0, 0);
+
+      const m = d.getMinutes();
+      const s = d.getSeconds();
+      const totalSec = m * 60 + s;
+
+      if (totalSec < 30 * 60) {
+        if (totalSec < 25 * 60) {
+          sessionStart.setMinutes(0);
+        } else {
+          sessionStart.setMinutes(30);
+        }
+      } else {
+        if (totalSec < 55 * 60) {
+          sessionStart.setMinutes(30);
+        } else {
+          sessionStart.setHours(sessionStart.getHours() + 1);
+          sessionStart.setMinutes(0);
+        }
+      }
+
+      const validUntil = new Date(sessionStart.getTime() + 30 * 60 * 1000);
+      return { sessionStart, validUntil };
     }
 
     function updateTimer() {
@@ -991,7 +1020,15 @@
         statusLine.textContent = "멤버 목록을 불러오지 못했습니다 😢";
         return;
       }
-      renderActiveMembers(data || []);
+
+      const now = new Date();
+      const filtered = (data || []).filter((row) => {
+        if (!row.joined_at) return true;
+        const { validUntil } = getSessionWindowForJoin(row.joined_at);
+        return now <= validUntil;
+      });
+
+      renderActiveMembers(filtered);
     }
 
     function renderActiveMembers(rows) {
@@ -1045,9 +1082,12 @@
       });
     }
 
+    // 🔥 Task planner: "현재 세션"부터 10개 세션
     function setupTaskPlanner() {
       const now = new Date();
-      const firstStart = getNextStudyStart(now);
+      const currentInfo = getCurrentBlock(now);
+      const firstStart = currentInfo.blockStart;
+
       taskSlots = [];
       for (let i = 0; i < 10; i++) {
         const start = new Date(firstStart.getTime() + i * 30 * 60 * 1000);
@@ -1226,7 +1266,7 @@
       }
     }
 
-    // === 내 할 일 패널 ===
+    // 내 할 일 패널
     myTasksBtn.addEventListener("click", openMyTasksPanel);
     closeMyTasksBtn.addEventListener("click", () => {
       myTasksPanel.classList.add("hidden");
@@ -1244,7 +1284,7 @@
       yesterday.setDate(yesterday.getDate() - 1);
       const yStr = yesterday.toISOString().slice(0, 10);
 
-      statusLine.textContent = "내 할 일(2일치) 불러오는 중...";
+      statusLine.textContent = "내 할 일 불러오는 중...";
       const { data, error } = await supabase
         .from("pomodoro_tasks")
         .select("*")
@@ -1277,21 +1317,27 @@
       }
 
       const now = new Date();
+      const currentInfo = getCurrentBlock(now);
+      const currentKey = currentInfo.blockKey;
+
       const editableRows = [];
       const pastRows = [];
 
       myTasksData.forEach((row) => {
         const start = new Date(row.block_start);
-        if (start >= now) editableRows.push(row);
-        else pastRows.push(row);
+        const isCurrent = row.block_key === currentKey;
+        if (isCurrent || start >= now) {
+          editableRows.push(row);
+        } else {
+          pastRows.push(row);
+        }
       });
 
       myEditableTasks = editableRows;
 
-      // 1) 앞으로 남은 세션: 시간만 보여주고 편집
       if (!editableRows.length) {
         myTasksListEl.innerHTML =
-          '<div style="font-size:0.8rem;color:#999;">앞으로 남은 세션 할 일이 없습니다.</div>';
+          '<div style="font-size:0.8rem;color:#999;">현재/앞으로 남은 세션 할 일이 없습니다.</div>';
       } else {
         editableRows.forEach((row, index) => {
           const rowDiv = document.createElement("div");
@@ -1311,7 +1357,7 @@
           input.type = "text";
           input.className = "my-task-input";
           input.value = row.task_text || "";
-          input.dataset.index = String(index); // editableRows 기준
+          input.dataset.index = String(index);
 
           rowDiv.appendChild(timeDiv);
           rowDiv.appendChild(input);
@@ -1319,7 +1365,6 @@
         });
       }
 
-      // 2) 지난 세션(어제 + 오늘 이전 시간): 예쁘게 표로
       if (pastRows.length) {
         const byDate = new Map();
         pastRows.forEach((row) => {
@@ -1359,6 +1404,7 @@
       }
     }
 
+    // 🔥 여기에서 "member_name + block_key" 기준으로 수정/삭제 처리
     async function saveMyTasksEdits() {
       if (!selectedName || !myEditableTasks.length) {
         myTasksPanel.classList.add("hidden");
@@ -1367,7 +1413,7 @@
 
       const inputs = myTasksListEl.querySelectorAll(".my-task-input");
       const rowsToUpsert = [];
-      const idsToDelete = [];
+      const keysToDelete = [];
 
       inputs.forEach((input) => {
         const idx = Number(input.dataset.index);
@@ -1377,15 +1423,15 @@
 
         if (text) {
           rowsToUpsert.push({
-            id: row.id,
             member_name: selectedName,
             block_key: row.block_key,
             block_date: row.block_date,
             block_start: row.block_start,
             task_text: text
           });
-        } else if (row.id) {
-          idsToDelete.push(row.id);
+        } else {
+          // 빈 칸 ⇒ 삭제 대상
+          keysToDelete.push(row.block_key);
         }
       });
 
@@ -1394,7 +1440,7 @@
       if (rowsToUpsert.length) {
         const { error } = await supabase
           .from("pomodoro_tasks")
-          .upsert(rowsToUpsert, { onConflict: "id" });
+          .upsert(rowsToUpsert, { onConflict: "member_name,block_key" });
         if (error) {
           console.error("saveMyTasksEdits upsert error", error);
           statusLine.textContent = "수정 내용을 저장하지 못했습니다 😢";
@@ -1402,11 +1448,12 @@
         }
       }
 
-      if (idsToDelete.length) {
+      if (keysToDelete.length) {
         const { error } = await supabase
           .from("pomodoro_tasks")
           .delete()
-          .in("id", idsToDelete);
+          .eq("member_name", selectedName)
+          .in("block_key", keysToDelete);
         if (error) {
           console.error("saveMyTasksEdits delete error", error);
           statusLine.textContent = "일부 할 일을 삭제하지 못했습니다 😢";
@@ -1427,34 +1474,6 @@
         return;
       }
 
-      const now = new Date();
-      const info = getCurrentBlock(now);
-      const m = now.getMinutes();
-      const s = now.getSeconds();
-      const totalSec = m * 60 + s;
-      let canJoin = false;
-
-      if (info.phase === "study") {
-        if (now <= info.joinDeadline) canJoin = true;
-      } else {
-        const nextStart = new Date(now);
-        nextStart.setSeconds(0, 0);
-        if (totalSec < 30 * 60) {
-          nextStart.setMinutes(30);
-        } else {
-          nextStart.setHours(now.getHours() + 1);
-          nextStart.setMinutes(0);
-        }
-        const diffMs = nextStart.getTime() - now.getTime();
-        if (diffMs >= 0 && diffMs <= 5 * 60 * 1000) canJoin = true;
-      }
-
-      if (!canJoin) {
-        statusLine.textContent =
-          "공부 시작 전 5분 ~ 시작 후 5분 사이에만 참가할 수 있습니다 😢";
-        return;
-      }
-
       statusLine.textContent = "공부 시작 표시 중...";
 
       await supabase
@@ -1472,7 +1491,7 @@
         return;
       }
       statusLine.textContent =
-        "지금 공부 중으로 표시되었습니다 💪 (스티커 조건: 시작 전/후 5분 + 종료 후 5분 이내)";
+        "지금 공부 중으로 표시되었습니다 💪 (스티커는 제시간 시작·종료 시 기록돼요)";
       loadActiveMembers();
     }
 
@@ -1508,6 +1527,19 @@
       const info = getCurrentBlock(now);
       statusLine.textContent = "공부 종료 표시 중...";
 
+      const { data: activeRows, error: activeErr } = await supabase
+        .from("pomodoro_active")
+        .select("joined_at")
+        .eq("member_name", selectedName)
+        .limit(1);
+
+      let joinAt = null;
+      if (!activeErr && activeRows && activeRows.length) {
+        joinAt = activeRows[0].joined_at
+          ? new Date(activeRows[0].joined_at)
+          : null;
+      }
+
       const { error } = await supabase
         .from("pomodoro_active")
         .delete()
@@ -1518,15 +1550,29 @@
         return;
       }
 
-      const isStickerWindow =
-        now >= info.blockEnd && now <= info.endDeadline;
-      if (isStickerWindow) {
+      const startWindowStart = new Date(
+        info.blockStart.getTime() - 5 * 60 * 1000
+      );
+      const startWindowEnd = new Date(
+        info.blockStart.getTime() + 5 * 60 * 1000
+      );
+      const endOk = now >= info.blockEnd && now <= info.endDeadline;
+      const startOk =
+        joinAt &&
+        joinAt >= startWindowStart &&
+        joinAt <= startWindowEnd;
+
+      if (startOk && endOk) {
         await recordSticker(info);
         statusLine.textContent = "25분 세션 스티커 획득! 🍅";
+      } else if (!startOk && endOk) {
+        statusLine.textContent =
+          "이번 세션은 늦게 참여해서 스티커는 없지만, 끝까지 공부한 것만으로도 최고! 👏";
       } else {
         statusLine.textContent =
-          "공부 종료는 되었지만, 스티커 조건은 맞지 않습니다 😢 (시작 전/후 5분 + 종료 후 5분 이내)";
+          "공부 종료는 되었지만, 스티커 조건은 맞지 않습니다 😢 (제시간 시작·종료 필요)";
       }
+
       loadActiveMembers();
     }
 
@@ -1540,7 +1586,7 @@
       yesterday.setDate(yesterday.getDate() - 1);
       const yStr = yesterday.toISOString().slice(0, 10);
 
-      statusLine.textContent = "최근 2일 스티커 기록 불러오는 중...";
+      statusLine.textContent = "스티커 기록 불러오는 중...";
 
       const { data, error } = await supabase
         .from("pomodoro_sessions")
@@ -1564,7 +1610,7 @@
       stickerTableEl.innerHTML = "";
       if (!rows.length) {
         stickerTableEl.innerHTML =
-          '<div class="no-stickers">최근 2일 스티커 기록이 없습니다.</div>';
+          '<div class="no-stickers">스티커 기록이 없습니다.</div>';
         return;
       }
 
