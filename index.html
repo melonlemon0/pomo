@@ -23,7 +23,7 @@
 
     .app {
       width: 100%;
-      max-width: 720px;
+      max-width: 820px;
       margin: 24px 12px;
       background: #ffffffcc;
       border-radius: 20px;
@@ -60,6 +60,7 @@
       margin-bottom: 6px;
     }
 
+    /* 이름 선택 화면 */
     #nameSearch {
       width: 100%;
       padding: 8px 10px;
@@ -109,6 +110,13 @@
       box-shadow: 0 0 0 2px rgba(255, 158, 203, 0.35);
     }
 
+    .name-footer {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 0.8rem;
+      color: #888;
+    }
+
     .primary-btn,
     .secondary-btn {
       border: none;
@@ -148,13 +156,7 @@
       opacity: 0.9;
     }
 
-    .name-footer {
-      margin-top: 10px;
-      text-align: right;
-      font-size: 0.8rem;
-      color: #888;
-    }
-
+    /* 타이머 화면 */
     .timer-header {
       display: flex;
       justify-content: space-between;
@@ -223,66 +225,41 @@
       box-shadow: 0 12px 30px rgba(255, 140, 184, 0.6);
     }
 
-    /* 🟦/🩷 뽀모 얼굴 */
-    .face-img {
-      position: absolute;
-      inset: 4%;
-      width: 92%;
-      height: 92%;
-      object-fit: contain;
-      z-index: 1;
-      pointer-events: none;
-      animation: faceFloat 7s ease-in-out infinite;
-    }
-
-    @keyframes faceFloat {
-      0% {
-        transform: translateY(2px) scale(1);
-      }
-      50% {
-        transform: translateY(-4px) scale(1.02);
-      }
-      100% {
-        transform: translateY(2px) scale(1);
-      }
-    }
-
     .timer-text {
       font-size: 3rem;
       font-weight: 700;
       color: #333;
       position: relative;
-      z-index: 3;
+      z-index: 2;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
 
-    /* 둥둥 떠다니는 멤버 이모지 */
+    /* 떠다니는 이모지 */
     .emoji-layer {
       position: absolute;
       inset: 8%;
       pointer-events: none;
       overflow: hidden;
-      z-index: 2;
+      z-index: 1;
     }
 
     .emoji-bubble {
       position: absolute;
-      opacity: 0.55;
+      opacity: 0.7;
       animation: floatEmoji 10s ease-in-out infinite alternate;
-      filter: blur(0px);
     }
 
     @keyframes floatEmoji {
       0% {
         transform: translate(var(--x-start), var(--y-start));
-        opacity: 0.55;
+        opacity: 0.6;
       }
       50% {
-        opacity: 0.9;
+        opacity: 1;
       }
       100% {
         transform: translate(var(--x-end), var(--y-end));
-        opacity: 0.45;
+        opacity: 0.6;
       }
     }
 
@@ -317,86 +294,8 @@
       text-align: center;
     }
 
-    .task-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-
-    .task-planner {
-      margin-top: 4px;
-      padding: 10px 10px 12px;
-      border-radius: 14px;
-      background: #f9f4ff;
-      border: 1px solid #e3d7ff;
-    }
-
-    .task-planner-title {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .task-planner-sub {
-      font-size: 0.8rem;
-      color: #777;
-      margin-bottom: 8px;
-    }
-
-    .task-slots {
-      max-height: 210px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .task-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .task-time {
-      width: 60px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #555;
-    }
-
-    .task-input {
-      flex: 1;
-      padding: 6px 8px;
-      border-radius: 10px;
-      border: 1px solid #e3d7ff;
-      font-size: 0.85rem;
-      background: #fff;
-      outline: none;
-    }
-
-    .task-input:focus {
-      border-color: #ff9ecb;
-      box-shadow: 0 0 0 2px rgba(255, 158, 203, 0.3);
-    }
-
-    .task-save-row {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .task-save-hint {
-      font-size: 0.75rem;
-      color: #999;
-      margin-top: 4px;
-      text-align: center;
-    }
-
     .session-tasks {
-      margin-top: 14px;
+      margin-top: 12px;
       padding: 10px 10px 8px;
       border-radius: 14px;
       background: #fff9fb;
@@ -528,84 +427,193 @@
       color: #555;
     }
 
-    .my-tasks-panel {
-      margin-top: 12px;
-      padding: 10px 10px 12px;
-      border-radius: 14px;
-      background: #fef5ff;
-      border: 1px solid #f4cfff;
-    }
-
-    .my-tasks-header {
+    /* 할 일 보드 화면 */
+    .board-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
     }
 
-    .my-tasks-title {
-      font-size: 0.9rem;
+    .board-title {
+      font-size: 1rem;
       font-weight: 600;
     }
 
-    .my-tasks-sub {
-      font-size: 0.78rem;
+    .board-sub {
+      font-size: 0.8rem;
       color: #777;
-      margin-bottom: 6px;
-    }
-
-    .my-tasks-list {
-      max-height: 220px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
       margin-bottom: 8px;
     }
 
-    .my-task-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .board-wrapper {
+      border-radius: 14px;
+      border: 1px solid #e3d7ff;
+      background: #faf7ff;
+      padding: 8px;
     }
 
-    .my-task-time {
-      width: 60px;
-      font-size: 0.82rem;
+    .board-scroll {
+      overflow-x: auto;
+    }
+
+    #taskBoardTable {
+      border-collapse: collapse;
+      min-width: 720px;
+      font-size: 0.8rem;
+    }
+
+    #taskBoardTable th,
+    #taskBoardTable td {
+      border: 1px solid #e3d7ff;
+      padding: 4px;
+      text-align: left;
+      min-width: 80px;
+    }
+
+    #taskBoardTable thead th {
+      background: #f4ecff;
       font-weight: 600;
-      color: #555;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 2;
     }
 
-    .my-task-input {
-      flex: 1;
-      padding: 6px 8px;
-      border-radius: 10px;
-      border: 1px solid #f0c8ff;
-      font-size: 0.84rem;
-      background: #fff;
+    #taskBoardTable .member-col {
+      position: sticky;
+      left: 0;
+      z-index: 3;
+      background: #fefbff;
+      min-width: 120px;
+      max-width: 140px;
+      white-space: nowrap;
+    }
+
+    .board-task-input {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e3d7ff;
+      padding: 3px 4px;
+      font-size: 0.8rem;
+      background: #ffffff;
       outline: none;
     }
 
-    .my-task-input:focus {
+    .board-task-input:focus {
       border-color: #ff9ecb;
       box-shadow: 0 0 0 2px rgba(255, 158, 203, 0.25);
     }
 
-    .my-tasks-footer {
+    .board-task-cell {
+      position: relative;
+      background: #ffffff;
+    }
+
+    .board-task-cell.me {
+      background: #fff6fb;
+    }
+
+    .board-task-emoji {
+      position: absolute;
+      right: 2px;
+      bottom: 1px;
+      font-size: 0.9rem;
+    }
+
+    .board-task-text-readonly {
+      font-size: 0.78rem;
+      color: #555;
+      padding-right: 18px;
+      min-height: 1.2em;
+    }
+
+    .board-footer {
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 6px;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: #777;
     }
 
-    .my-tasks-hint {
+    /* 대화방 */
+    .chat-wrapper {
+      border-radius: 14px;
+      border: 1px solid #ffd6e8;
+      background: #fff9fb;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      height: 420px;
+      max-height: calc(100vh - 210px);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .chat-message {
+      margin-bottom: 6px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #ffe1f1;
+      font-size: 0.83rem;
+      max-width: 90%;
+    }
+
+    .chat-message.me {
+      margin-left: auto;
+      background: #ffe7f3;
+      border-color: #ffb6da;
+    }
+
+    .chat-meta {
       font-size: 0.75rem;
-      color: #999;
+      color: #888;
+      margin-bottom: 2px;
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
     }
 
-    #myTasksHistory {
-      margin-top: 10px;
+    .chat-text {
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #333;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    #chatInput {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid #ffd6e8;
+      padding: 7px 10px;
+      font-size: 0.85rem;
+      outline: none;
+      background: #ffffff;
+    }
+
+    #chatInput:focus {
+      border-color: #ff9ecb;
+      box-shadow: 0 0 0 2px rgba(255, 158, 203, 0.25);
+    }
+
+    #sendChatBtn {
+      padding-inline: 12px;
+      font-size: 0.85rem;
     }
 
     @media (max-width: 600px) {
@@ -628,7 +636,7 @@
   <div class="app">
     <h1>뽀모 실시간 타이머 🍅</h1>
     <div class="subtitle">
-      이름 → 할 일 적기 → 타이머 순서로 같이 공부해요 💪
+      이름 선택 → 타이머 → 할 일 보드 & 대화방으로 같이 공부해요 💬
     </div>
 
     <!-- 1. 이름 선택 화면 -->
@@ -641,45 +649,16 @@
       />
       <div id="nameList" class="name-list"></div>
       <div class="name-footer">
-        이름 클릭 후 &ldquo;할 일 적으러 가기&rdquo;를 눌러 주세요 :)
+        이름 선택 후 아래 버튼을 누르면 타이머 화면으로 이동합니다.
       </div>
       <div style="margin-top: 10px; text-align: center;">
-        <button id="goTaskBtn" class="primary-btn">
-          ✏️ 할 일 적으러 가기
+        <button id="goTimerBtn" class="primary-btn">
+          ⏱ 타이머로 가기
         </button>
       </div>
     </div>
 
-    <!-- 2. 할 일 작성 화면 -->
-    <div id="task-screen" class="screen hidden">
-      <div class="task-header">
-        <div class="current-name">
-          현재 선택: <span id="currentNameTask"></span>
-        </div>
-        <button id="backToNameBtn" class="secondary-btn">
-          🔄 이름 다시 선택
-        </button>
-      </div>
-
-      <div class="task-planner">
-        <div class="task-planner-title">2. 오늘 다가오는 세션 할 일 적기 ✏️</div>
-        <div class="task-planner-sub">
-          지금 시간 기준 <strong>이번 세션 + 다음 9개 공부 세션(총 10개)</strong>까지 미리 적을 수 있어요.<br />
-          예: 9:15에 들어오면 <strong>9:00, 9:30, 10:00, 10:30 ...</strong> 순서로 보여줍니다.
-        </div>
-        <div id="taskSlots" class="task-slots"></div>
-        <div class="task-save-row">
-          <button id="goTimerFromTaskBtn" class="primary-btn">
-            ⏱ 타이머로 가기 (자동 저장)
-          </button>
-          <div class="task-save-hint">
-            빈 칸으로 두면 해당 세션 할 일은 삭제됩니다.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. 타이머 화면 -->
+    <!-- 2. 타이머 화면 -->
     <div id="timer-screen" class="screen hidden">
       <div class="timer-header">
         <div class="current-name">
@@ -693,11 +672,7 @@
 
       <div class="timer-wrapper">
         <div class="timer-circle" id="timerCircle">
-          <!-- 뽀모 얼굴 이미지 -->
-          <img id="faceImg" class="face-img" src="face-study.png" alt="뽀모 얼굴" />
-          <!-- 떠다니는 멤버 이모지 -->
           <div class="emoji-layer" id="emojiLayer"></div>
-          <!-- 중앙 남은 시간 -->
           <div class="timer-text" id="timerDisplay">--:--</div>
         </div>
         <div class="timer-sub" id="timerSubText">
@@ -712,8 +687,11 @@
           </button>
         </div>
         <div class="extra-controls">
-          <button id="myTasksBtn" class="secondary-btn">
-            📝 내 할 일
+          <button id="openBoardBtn" class="secondary-btn">
+            🧾 오늘의 할 일 보드
+          </button>
+          <button id="openChatBtn" class="secondary-btn">
+            💬 대화방
           </button>
           <button id="showStickersBtn" class="secondary-btn">
             📊 스티커 기록
@@ -725,39 +703,72 @@
       <!-- 이번 세션 할 일 -->
       <div class="session-tasks" id="sessionTasks"></div>
 
-      <!-- 내 할 일 패널 -->
-      <div id="myTasksPanel" class="my-tasks-panel hidden">
-        <div class="my-tasks-header">
-          <div class="my-tasks-title">내 할 일 (오늘 + 어제)</div>
-          <button id="closeMyTasksBtn" class="secondary-btn" style="padding:4px 10px;font-size:0.8rem;">
-            닫기 ✖️
-          </button>
-        </div>
-        <div class="my-tasks-sub">
-          위에는 <strong>현재 세션 + 앞으로 남은 세션</strong>만 시간별로 편집할 수 있고,<br />
-          아래 표에는 <strong>이미 지난 세션/어제 기록</strong>이 정리됩니다.
-        </div>
-        <div id="myTasksList" class="my-tasks-list"></div>
-        <div id="myTasksHistory" class="sticker-table"></div>
-        <div class="my-tasks-footer">
-          <div class="my-tasks-hint">* 빈 칸으로 두고 저장하면 해당 세션 할 일이 삭제됩니다.</div>
-          <button id="saveMyTasksBtn" class="primary-btn" style="padding:7px 12px;font-size:0.85rem;">
-            💾 수정 내용 저장
-          </button>
-        </div>
-      </div>
-
+      <!-- 현재 공부 중 멤버 -->
       <div class="active-names-section">
         <div class="active-title">지금 같이 공부 중인 뽀모 멤버 🍅</div>
         <div id="activeNames" class="active-names"></div>
         <div class="hint-line">
           ※ &ldquo;시작하기&rdquo;를 누르면 이름이 올라가고,<br />
-          &ldquo;끝내기&rdquo;를 눌러야 <strong>스티커 조건</strong>의 종료 시간 체크됩니다.<br />
+          &ldquo;끝내기&rdquo;를 눌러야 <strong>스티커 조건</strong>이 체크됩니다.<br />
           (스티커: 세션 시작 전/후 5분 + 종료 후 5분 이내)
         </div>
       </div>
 
+      <!-- 스티커 기록 -->
       <div class="sticker-table" id="stickerTable"></div>
+    </div>
+
+    <!-- 3. 할 일 보드 화면 -->
+    <div id="board-screen" class="screen hidden">
+      <div class="board-header">
+        <div class="board-title">오늘의 할 일 보드 🧾</div>
+        <button id="backToTimerBtn" class="secondary-btn">
+          ⏱ 타이머로 돌아가기
+        </button>
+      </div>
+      <div class="board-sub">
+        세로: 오늘 할 일을 한 번이라도 적은 뽀모 멤버 + 나 (내 이름이 항상 맨 위)<br />
+        가로: 아침 6시 ~ 밤 12시까지 30분 단위 세션.<br />
+        내 줄만 직접 수정 가능하고, 스티커를 얻은 세션에는 이모지가 표시됩니다.
+      </div>
+      <div class="board-wrapper">
+        <div class="board-scroll">
+          <table id="taskBoardTable"></table>
+        </div>
+        <div class="board-footer">
+          <span>※ 칸 비우고 저장하면 해당 세션 할 일이 삭제됩니다.</span>
+          <button id="saveBoardBtn" class="primary-btn" style="padding:7px 12px;font-size:0.85rem;">
+            💾 내 할 일 저장
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 대화방 화면 -->
+    <div id="chat-screen" class="screen hidden">
+      <div class="board-header">
+        <div class="board-title">뽀모 대화방 💬</div>
+        <button id="backFromChatBtn" class="secondary-btn">
+          ⏱ 타이머로 돌아가기
+        </button>
+      </div>
+      <div class="board-sub">
+        공부 전/후 한마디, 응원, 잡담 등 자유롭게 채팅해 주세요.<br />
+        (닉네임은 위에서 선택한 뽀모 이름으로 표시됩니다)
+      </div>
+      <div class="chat-wrapper">
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input-row">
+          <input
+            id="chatInput"
+            type="text"
+            placeholder="메시지를 입력하고 Enter 또는 전송 버튼을 눌러요 ✨"
+          />
+          <button id="sendChatBtn" class="primary-btn">
+            보내기
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -787,17 +798,13 @@
     ];
 
     const nameScreen = document.getElementById("name-screen");
-    const taskScreen = document.getElementById("task-screen");
     const timerScreen = document.getElementById("timer-screen");
+    const boardScreen = document.getElementById("board-screen");
+    const chatScreen = document.getElementById("chat-screen");
 
     const nameListEl = document.getElementById("nameList");
     const nameSearchEl = document.getElementById("nameSearch");
-    const goTaskBtn = document.getElementById("goTaskBtn");
-
-    const currentNameTaskEl = document.getElementById("currentNameTask");
-    const backToNameBtn = document.getElementById("backToNameBtn");
-    const goTimerFromTaskBtn = document.getElementById("goTimerFromTaskBtn");
-    const taskSlotsEl = document.getElementById("taskSlots");
+    const goTimerBtn = document.getElementById("goTimerBtn");
 
     const currentNameEl = document.getElementById("currentName");
     const changeNameBtn = document.getElementById("changeNameBtn");
@@ -805,30 +812,47 @@
     const timerSubText = document.getElementById("timerSubText");
     const phaseLabel = document.getElementById("phaseLabel");
     const timerCircle = document.getElementById("timerCircle");
+    const emojiLayerEl = document.getElementById("emojiLayer");
     const startBtn = document.getElementById("startBtn");
     const stopBtn = document.getElementById("stopBtn");
     const statusLine = document.getElementById("statusLine");
     const activeNamesEl = document.getElementById("activeNames");
-    const emojiLayerEl = document.getElementById("emojiLayer");
+    const sessionTasksEl = document.getElementById("sessionTasks");
     const showStickersBtn = document.getElementById("showStickersBtn");
     const stickerTableEl = document.getElementById("stickerTable");
-    const sessionTasksEl = document.getElementById("sessionTasks");
-    const faceImg = document.getElementById("faceImg");
 
-    const myTasksBtn = document.getElementById("myTasksBtn");
-    const myTasksPanel = document.getElementById("myTasksPanel");
-    const myTasksListEl = document.getElementById("myTasksList");
-    const myTasksHistoryEl = document.getElementById("myTasksHistory");
-    const saveMyTasksBtn = document.getElementById("saveMyTasksBtn");
-    const closeMyTasksBtn = document.getElementById("closeMyTasksBtn");
+    const openBoardBtn = document.getElementById("openBoardBtn");
+    const backToTimerBtn = document.getElementById("backToTimerBtn");
+    const taskBoardTable = document.getElementById("taskBoardTable");
+    const saveBoardBtn = document.getElementById("saveBoardBtn");
+
+    const openChatBtn = document.getElementById("openChatBtn");
+    const backFromChatBtn = document.getElementById("backFromChatBtn");
+    const chatMessagesEl = document.getElementById("chatMessages");
+    const chatInputEl = document.getElementById("chatInput");
+    const sendChatBtn = document.getElementById("sendChatBtn");
 
     let selectedName = null;
     let selectedButton = null;
-    let taskSlots = [];
     let lastTaskBlockKey = null;
-    let myTasksData = [];
-    let myEditableTasks = [];
 
+    // 보드용 데이터
+    let boardSlots = [];
+    let boardMembers = [];
+    let boardEditableInputs = [];
+
+    // 채팅 캐시
+    let chatMessagesCache = [];
+
+    /* ---- 공통 유틸 ---- */
+    function getLocalDateStr(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    /* ---- 블록 계산 ---- */
     function getCurrentBlock(now = new Date()) {
       const m = now.getMinutes();
       const s = now.getSeconds();
@@ -836,29 +860,18 @@
 
       const blockStart = new Date(now);
       blockStart.setSeconds(0, 0);
-
-      if (totalSec < 30 * 60) {
-        blockStart.setMinutes(0);
-      } else {
-        blockStart.setMinutes(30);
-      }
+      if (totalSec < 30 * 60) blockStart.setMinutes(0);
+      else blockStart.setMinutes(30);
 
       const blockEnd = new Date(blockStart.getTime() + 25 * 60 * 1000);
       const joinDeadline = new Date(blockStart.getTime() + 5 * 60 * 1000);
       const endDeadline = new Date(blockEnd.getTime() + 5 * 60 * 1000);
+
       const phase = now < blockEnd ? "study" : "break";
       const blockKey = blockStart.toISOString();
-      const blockDateStr = blockStart.toISOString().slice(0, 10);
+      const blockDateStr = getLocalDateStr(blockStart);
 
-      return {
-        phase,
-        blockStart,
-        blockEnd,
-        joinDeadline,
-        endDeadline,
-        blockKey,
-        blockDateStr
-      };
+      return { phase, blockStart, blockEnd, joinDeadline, endDeadline, blockKey, blockDateStr };
     }
 
     function getSessionWindowForJoin(joinedAtInput) {
@@ -884,11 +897,15 @@
           sessionStart.setMinutes(0);
         }
       }
-
       const validUntil = new Date(sessionStart.getTime() + 30 * 60 * 1000);
       return { sessionStart, validUntil };
     }
 
+    function formatTimeLabel(d) {
+      return d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    /* ---- 타이머 ---- */
     function updateTimer() {
       const now = new Date();
       const m = now.getMinutes();
@@ -916,8 +933,7 @@
       const remaining = nextBoundary - totalSec;
       const mm = Math.floor(remaining / 60);
       const ss = remaining % 60;
-      timerDisplay.textContent =
-        String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
+      timerDisplay.textContent = `${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
 
       if (phase === "study") {
         phaseLabel.textContent = "공부 시간 🍅 (25분)";
@@ -926,7 +942,6 @@
         timerSubText.textContent = "정각/30분 기준 25분 공부 중입니다.";
         timerCircle.classList.add("study");
         timerCircle.classList.remove("break");
-        if (faceImg) faceImg.src = "face-study.png";
       } else {
         phaseLabel.textContent = "쉬는 시간 ☕ (5분)";
         phaseLabel.classList.add("break");
@@ -934,7 +949,6 @@
         timerSubText.textContent = "5분 휴식 타임! 물 마시고 스트레칭 🌿";
         timerCircle.classList.add("break");
         timerCircle.classList.remove("study");
-        if (faceImg) faceImg.src = "face-break.png";
       }
 
       if (info.blockKey !== lastTaskBlockKey) {
@@ -946,6 +960,7 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 
+    /* ---- 이름 선택 ---- */
     function renderNameButtons(filter = "") {
       nameListEl.innerHTML = "";
       const lower = filter.trim().toLowerCase();
@@ -982,22 +997,10 @@
 
     function showNameScreen() {
       nameScreen.classList.remove("hidden");
-      taskScreen.classList.add("hidden");
       timerScreen.classList.add("hidden");
+      boardScreen.classList.add("hidden");
+      chatScreen.classList.add("hidden");
       statusLine.textContent = "";
-    }
-
-    function showTaskScreen() {
-      if (!selectedName) {
-        alert("먼저 이름을 선택해 주세요!");
-        return;
-      }
-      currentNameTaskEl.textContent = selectedName;
-      nameScreen.classList.add("hidden");
-      taskScreen.classList.remove("hidden");
-      timerScreen.classList.add("hidden");
-      statusLine.textContent = "";
-      setupTaskPlanner();
     }
 
     function showTimerScreen() {
@@ -1007,22 +1010,23 @@
       }
       currentNameEl.textContent = selectedName;
       nameScreen.classList.add("hidden");
-      taskScreen.classList.add("hidden");
       timerScreen.classList.remove("hidden");
+      boardScreen.classList.add("hidden");
+      chatScreen.classList.add("hidden");
       statusLine.textContent = "";
       loadActiveMembers();
       const info = getCurrentBlock();
       loadCurrentSessionTasks(info);
     }
 
-    goTaskBtn.addEventListener("click", showTaskScreen);
-    backToNameBtn.addEventListener("click", showNameScreen);
+    goTimerBtn.addEventListener("click", showTimerScreen);
 
     changeNameBtn.addEventListener("click", () => {
       leaveSession();
       showNameScreen();
     });
 
+    /* ---- active 멤버 + 이모지 ---- */
     async function loadActiveMembers() {
       const { data, error } = await supabase
         .from("pomodoro_active")
@@ -1083,148 +1087,19 @@
         span.style.setProperty("--y-end", yEnd);
         span.style.left = "50%";
         span.style.top = "50%";
-        span.style.fontSize = (Math.random() * 16 + 26).toFixed(0) + "px";
+        span.style.fontSize = (Math.random() * 16 + 28).toFixed(0) + "px";
         span.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
         emojiLayerEl.appendChild(span);
       }
     }
 
-    function formatTimeLabel(d) {
-      return d.toLocaleTimeString("ko-KR", {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
-    // 🔥 Task planner: 현재 세션부터 10개 세션
-    function setupTaskPlanner() {
-      const now = new Date();
-      const currentInfo = getCurrentBlock(now);
-      const firstStart = currentInfo.blockStart;
-
-      taskSlots = [];
-      for (let i = 0; i < 10; i++) {
-        const start = new Date(firstStart.getTime() + i * 30 * 60 * 1000);
-        const blockKey = start.toISOString();
-        const blockDateStr = start.toISOString().slice(0, 10);
-        taskSlots.push({ blockKey, blockDateStr, start });
-      }
-      renderTaskSlots();
-      loadMyTasksForSlots();
-    }
-
-    function renderTaskSlots() {
-      taskSlotsEl.innerHTML = "";
-      taskSlots.forEach((slot) => {
-        const row = document.createElement("div");
-        row.className = "task-row";
-        const timeDiv = document.createElement("div");
-        timeDiv.className = "task-time";
-        timeDiv.textContent = formatTimeLabel(slot.start);
-        const input = document.createElement("input");
-        input.type = "text";
-        input.className = "task-input";
-        input.placeholder = "이 세션에 할 일 적기";
-        input.dataset.blockKey = slot.blockKey;
-        row.appendChild(timeDiv);
-        row.appendChild(input);
-        taskSlotsEl.appendChild(row);
-      });
-    }
-
-    async function loadMyTasksForSlots() {
-      if (!selectedName || !taskSlots.length) return;
-      const keys = taskSlots.map((s) => s.blockKey);
-      const { data, error } = await supabase
-        .from("pomodoro_tasks")
-        .select("*")
-        .eq("member_name", selectedName)
-        .in("block_key", keys);
-      if (error) {
-        console.error("loadMyTasksForSlots error", error);
-        return;
-      }
-      const byKey = new Map();
-      (data || []).forEach((row) => byKey.set(row.block_key, row.task_text));
-      const inputs = taskSlotsEl.querySelectorAll(".task-input");
-      inputs.forEach((input) => {
-        const key = input.dataset.blockKey;
-        input.value = byKey.get(key) || "";
-      });
-    }
-
-    // 🔥 2번 화면: 할 일 저장 (비우면 삭제)
-    async function saveTasks() {
-      if (!selectedName || !taskSlots.length) return;
-
-      const inputs = taskSlotsEl.querySelectorAll(".task-input");
-      const rowsToUpsert = [];
-      const keysToDelete = [];
-
-      const slotMap = new Map();
-      taskSlots.forEach((s) => slotMap.set(s.blockKey, s));
-
-      inputs.forEach((input) => {
-        const text = input.value.trim();
-        const blockKey = input.dataset.blockKey;
-        const slot = slotMap.get(blockKey);
-        if (!slot) return;
-
-        if (text) {
-          rowsToUpsert.push({
-            member_name: selectedName,
-            block_key: blockKey,
-            block_date: slot.blockDateStr,
-            block_start: slot.start.toISOString(),
-            task_text: text
-          });
-        } else {
-          keysToDelete.push(blockKey);
-        }
-      });
-
-      if (!rowsToUpsert.length && !keysToDelete.length) return;
-      statusLine.textContent = "할 일 저장 중...";
-
-      if (rowsToUpsert.length) {
-        const { error } = await supabase
-          .from("pomodoro_tasks")
-          .upsert(rowsToUpsert, { onConflict: "member_name,block_key" });
-
-        if (error) {
-          console.error("saveTasks upsert error", error);
-          statusLine.textContent = "할 일을 저장하지 못했습니다 😢";
-          return;
-        }
-      }
-
-      if (keysToDelete.length) {
-        const { error } = await supabase
-          .from("pomodoro_tasks")
-          .delete()
-          .eq("member_name", selectedName)
-          .in("block_key", keysToDelete);
-
-        if (error) {
-          console.error("saveTasks delete error", error);
-          statusLine.textContent = "일부 세션의 할 일을 삭제하지 못했습니다 😢";
-          return;
-        }
-      }
-
-      statusLine.textContent = "할 일이 저장되었습니다 ✏️";
-    }
-
-    goTimerFromTaskBtn.addEventListener("click", async () => {
-      await saveTasks();
-      showTimerScreen();
-    });
-
+    /* ---- 이번 세션 할 일 ---- */
     async function loadCurrentSessionTasks(info) {
       const { data, error } = await supabase
         .from("pomodoro_tasks")
         .select("*")
         .eq("block_key", info.blockKey);
+
       if (error) {
         console.error("loadCurrentSessionTasks error", error);
         sessionTasksEl.innerHTML =
@@ -1237,6 +1112,7 @@
     function renderSessionTasks(rows, info) {
       sessionTasksEl.innerHTML = "";
       const timeLabel = formatTimeLabel(info.blockStart);
+
       const titleDiv = document.createElement("div");
       titleDiv.className = "session-tasks-title";
       titleDiv.textContent = `이번 세션 (${timeLabel}) 할 일 보기`;
@@ -1256,28 +1132,28 @@
       if (myRow) {
         const myCard = document.createElement("div");
         myCard.className = "my-task-card";
-        const header = document.createElement("div");
-        header.className = "my-task-header";
-        header.textContent = `내 할 일 (${myRow.member_name})`;
-        const text = document.createElement("div");
-        text.className = "my-task-text";
-        text.textContent = myRow.task_text;
-        myCard.appendChild(header);
-        myCard.appendChild(text);
+        const h = document.createElement("div");
+        h.className = "my-task-header";
+        h.textContent = `내 할 일 (${myRow.member_name})`;
+        const txt = document.createElement("div");
+        txt.className = "my-task-text";
+        txt.textContent = myRow.task_text;
+        myCard.appendChild(h);
+        myCard.appendChild(txt);
         sessionTasksEl.appendChild(myCard);
       }
 
       if (others.length) {
         const listDiv = document.createElement("div");
         listDiv.className = "other-tasks-list";
-        others.forEach((row) => {
+        others.forEach((r) => {
           const item = document.createElement("div");
           item.className = "other-task-item";
           const nameSpan = document.createElement("span");
           nameSpan.className = "other-name";
-          nameSpan.textContent = row.member_name;
+          nameSpan.textContent = r.member_name;
           const textSpan = document.createElement("span");
-          textSpan.textContent = row.task_text;
+          textSpan.textContent = r.task_text;
           item.appendChild(nameSpan);
           item.appendChild(textSpan);
           listDiv.appendChild(item);
@@ -1286,218 +1162,12 @@
       }
     }
 
-    // 내 할 일 패널
-    myTasksBtn.addEventListener("click", openMyTasksPanel);
-    closeMyTasksBtn.addEventListener("click", () => {
-      myTasksPanel.classList.add("hidden");
-    });
-    saveMyTasksBtn.addEventListener("click", saveMyTasksEdits);
-
-    async function openMyTasksPanel() {
-      if (!selectedName) {
-        alert("먼저 이름을 선택해 주세요!");
-        return;
-      }
-      const today = new Date();
-      const todayStr = today.toISOString().slice(0, 10);
-      const yesterday = new Date(today);
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yStr = yesterday.toISOString().slice(0, 10);
-
-      statusLine.textContent = "내 할 일 불러오는 중...";
-      const { data, error } = await supabase
-        .from("pomodoro_tasks")
-        .select("*")
-        .eq("member_name", selectedName)
-        .in("block_date", [yStr, todayStr])
-        .order("block_date", { ascending: true })
-        .order("block_start", { ascending: true });
-
-      if (error) {
-        console.error("openMyTasksPanel error", error);
-        statusLine.textContent = "내 할 일을 불러오지 못했습니다 😢";
-        return;
-      }
-
-      statusLine.textContent = "";
-      myTasksData = data || [];
-      renderMyTasksList();
-      myTasksPanel.classList.remove("hidden");
-    }
-
-    function renderMyTasksList() {
-      myTasksListEl.innerHTML = "";
-      myTasksHistoryEl.innerHTML = "";
-      myEditableTasks = [];
-
-      if (!myTasksData.length) {
-        myTasksListEl.innerHTML =
-          '<div style="font-size:0.8rem;color:#999;">최근 2일 내에 작성한 할 일이 없습니다.</div>';
-        return;
-      }
-
-      const now = new Date();
-      const currentInfo = getCurrentBlock(now);
-      const currentKey = currentInfo.blockKey;
-
-      const editableRows = [];
-      const pastRows = [];
-
-      myTasksData.forEach((row) => {
-        const start = new Date(row.block_start);
-        const isCurrent = row.block_key === currentKey;
-        if (isCurrent || start >= now) {
-          editableRows.push(row);
-        } else {
-          pastRows.push(row);
-        }
-      });
-
-      myEditableTasks = editableRows;
-
-      if (!editableRows.length) {
-        myTasksListEl.innerHTML =
-          '<div style="font-size:0.8rem;color:#999;">현재/앞으로 남은 세션 할 일이 없습니다.</div>';
-      } else {
-        editableRows.forEach((row, index) => {
-          const rowDiv = document.createElement("div");
-          rowDiv.className = "my-task-row";
-
-          const start = new Date(row.block_start);
-          const timeLabel = start.toLocaleTimeString("ko-KR", {
-            hour: "2-digit",
-            minute: "2-digit"
-          });
-
-          const timeDiv = document.createElement("div");
-          timeDiv.className = "my-task-time";
-          timeDiv.textContent = timeLabel;
-
-          const input = document.createElement("input");
-          input.type = "text";
-          input.className = "my-task-input";
-          input.value = row.task_text || "";
-          input.dataset.index = String(index);
-
-          rowDiv.appendChild(timeDiv);
-          rowDiv.appendChild(input);
-          myTasksListEl.appendChild(rowDiv);
-        });
-      }
-
-      if (pastRows.length) {
-        const byDate = new Map();
-        pastRows.forEach((row) => {
-          if (!byDate.has(row.block_date)) byDate.set(row.block_date, []);
-          byDate.get(row.block_date).push(row);
-        });
-        const dates = Array.from(byDate.keys()).sort();
-
-        let html = "";
-        dates.forEach((date) => {
-          const label = `📅 ${date}`;
-          html += `<div class="date-label">${label}</div>`;
-          const rowsForDate = byDate
-            .get(date)
-            .slice()
-            .sort(
-              (a, b) =>
-                new Date(a.block_start) - new Date(b.block_start)
-            );
-          html +=
-            '<table><thead><tr><th>시간</th><th>할 일</th></tr></thead><tbody>';
-          rowsForDate.forEach((row) => {
-            const start = new Date(row.block_start);
-            const timeLabel = start.toLocaleTimeString("ko-KR", {
-              hour: "2-digit",
-              minute: "2-digit"
-            });
-            html += `<tr><td class="time-col">${timeLabel}</td><td>${row.task_text || ""}</td></tr>`;
-          });
-          html += "</tbody></table>";
-        });
-
-        myTasksHistoryEl.innerHTML = html;
-      } else {
-        myTasksHistoryEl.innerHTML =
-          '<div style="font-size:0.8rem;color:#bbb;">지난 세션 기록이 없습니다.</div>';
-      }
-    }
-
-    // 🔥 3번 화면: 내 할 일 수정/삭제 저장 (id 기준, 비우면 삭제)
-    async function saveMyTasksEdits() {
-      if (!selectedName || !myEditableTasks.length) {
-        myTasksPanel.classList.add("hidden");
-        return;
-      }
-
-      const inputs = myTasksListEl.querySelectorAll(".my-task-input");
-      const rowsToUpsert = [];
-      const idsToDelete = [];
-
-      inputs.forEach((input) => {
-        const idx = Number(input.dataset.index);
-        const row = myEditableTasks[idx];
-        if (!row) return;
-
-        const text = input.value.trim();
-
-        if (text) {
-          rowsToUpsert.push({
-            id: row.id,
-            member_name: selectedName,
-            block_key: row.block_key,
-            block_date: row.block_date,
-            block_start: row.block_start,
-            task_text: text
-          });
-        } else {
-          if (row.id) {
-            idsToDelete.push(row.id);
-          }
-        }
-      });
-
-      statusLine.textContent = "내 할 일 수정 내용 저장 중...";
-
-      if (rowsToUpsert.length) {
-        const { error } = await supabase
-          .from("pomodoro_tasks")
-          .upsert(rowsToUpsert, { onConflict: "id" });
-
-        if (error) {
-          console.error("saveMyTasksEdits upsert error", error);
-          statusLine.textContent = "수정 내용을 저장하지 못했습니다 😢";
-          return;
-        }
-      }
-
-      if (idsToDelete.length) {
-        const { error } = await supabase
-          .from("pomodoro_tasks")
-          .delete()
-          .in("id", idsToDelete);
-
-        if (error) {
-          console.error("saveMyTasksEdits delete error", error);
-          statusLine.textContent = "일부 할 일을 삭제하지 못했습니다 😢";
-          return;
-        }
-      }
-
-      statusLine.textContent = "내 할 일이 저장되었습니다 ✏️";
-      myTasksPanel.classList.add("hidden");
-
-      const info = getCurrentBlock();
-      loadCurrentSessionTasks(info);
-    }
-
+    /* ---- 세션 참여/종료 + 스티커 ---- */
     async function joinSession() {
       if (!selectedName) {
         alert("먼저 이름을 선택해 주세요!");
         return;
       }
-
       statusLine.textContent = "공부 시작 표시 중...";
 
       await supabase
@@ -1526,6 +1196,7 @@
         .eq("member_name", selectedName)
         .eq("block_key", info.blockKey)
         .limit(1);
+
       if (selError) {
         console.error("recordSticker select error", selError);
         return;
@@ -1542,6 +1213,7 @@
           block_end: info.blockEnd.toISOString(),
           earned_sticker: true
         });
+
       if (insError) console.error("recordSticker insert error", insError);
     }
 
@@ -1559,32 +1231,26 @@
 
       let joinAt = null;
       if (!activeErr && activeRows && activeRows.length) {
-        joinAt = activeRows[0].joined_at
-          ? new Date(activeRows[0].joined_at)
-          : null;
+        joinAt = activeRows[0].joined_at ? new Date(activeRows[0].joined_at) : null;
       }
 
       const { error } = await supabase
         .from("pomodoro_active")
         .delete()
         .eq("member_name", selectedName);
+
       if (error) {
         console.error("leaveSession error", error);
         statusLine.textContent = "공부 종료를 표시하지 못했습니다 😢";
         return;
       }
 
-      const startWindowStart = new Date(
-        info.blockStart.getTime() - 5 * 60 * 1000
-      );
-      const startWindowEnd = new Date(
-        info.blockStart.getTime() + 5 * 60 * 1000
-      );
+      const startWindowStart = new Date(info.blockStart.getTime() - 5 * 60 * 1000);
+      const startWindowEnd = new Date(info.blockStart.getTime() + 5 * 60 * 1000);
+
       const endOk = now >= info.blockEnd && now <= info.endDeadline;
       const startOk =
-        joinAt &&
-        joinAt >= startWindowStart &&
-        joinAt <= startWindowEnd;
+        joinAt && joinAt >= startWindowStart && joinAt <= startWindowEnd;
 
       if (startOk && endOk) {
         await recordSticker(info);
@@ -1603,12 +1269,13 @@
     startBtn.addEventListener("click", joinSession);
     stopBtn.addEventListener("click", leaveSession);
 
+    /* ---- 스티커 기록 ---- */
     async function loadRecentStickers() {
       const today = new Date();
-      const todayStr = today.toISOString().slice(0, 10);
+      const todayStr = getLocalDateStr(today);
       const yesterday = new Date(today);
       yesterday.setDate(yesterday.getDate() - 1);
-      const yStr = yesterday.toISOString().slice(0, 10);
+      const yStr = getLocalDateStr(yesterday);
 
       statusLine.textContent = "스티커 기록 불러오는 중...";
 
@@ -1683,6 +1350,361 @@
 
     showStickersBtn.addEventListener("click", loadRecentStickers);
 
+    /* ---- 할 일 보드 ---- */
+    function getEmojiFromName(name) {
+      const chars = Array.from(name);
+      return chars[chars.length - 1] || "🍅";
+    }
+
+    function buildBoardSlotsForToday() {
+      const today = new Date();
+      today.setHours(6, 0, 0, 0);
+      const slots = [];
+      for (let i = 0; i < 36; i++) {
+        const start = new Date(today.getTime() + i * 30 * 60 * 1000);
+        slots.push({
+          start,
+          blockKey: start.toISOString(),
+          label: start.toLocaleTimeString("ko-KR", {
+            hour: "2-digit",
+            minute: "2-digit"
+          }),
+          dateStr: getLocalDateStr(start)
+        });
+      }
+      return slots;
+    }
+
+    async function openBoard() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+
+      statusLine.textContent = "할 일 보드를 불러오는 중...";
+
+      const today = new Date();
+      const todayStr = getLocalDateStr(today);
+      boardSlots = buildBoardSlotsForToday();
+
+      const { data: tasks, error: taskErr } = await supabase
+        .from("pomodoro_tasks")
+        .select("*")
+        .eq("block_date", todayStr);
+
+      if (taskErr) {
+        console.error("openBoard tasks error", taskErr);
+        statusLine.textContent = "오늘 할 일 보드를 불러오지 못했습니다 😢";
+        return;
+      }
+
+      const memberSet = new Set();
+      (tasks || []).forEach((row) => {
+        if (row.member_name) memberSet.add(row.member_name);
+      });
+      memberSet.add(selectedName);
+
+      let members = Array.from(memberSet);
+      members.sort((a, b) => a.localeCompare(b, "ko-KR"));
+      members = [selectedName, ...members.filter((n) => n !== selectedName)];
+      boardMembers = members;
+
+      const { data: stickers, error: stickerErr } = await supabase
+        .from("pomodoro_sessions")
+        .select("*")
+        .eq("block_date", todayStr)
+        .eq("earned_sticker", true)
+        .in("member_name", members);
+
+      if (stickerErr) {
+        console.error("openBoard stickers error", stickerErr);
+      }
+
+      const taskMap = new Map();
+      (tasks || []).forEach((row) => {
+        if (!memberSet.has(row.member_name)) return;
+        const key = `${row.member_name}|${row.block_key}`;
+        taskMap.set(key, row);
+      });
+
+      const stickerSet = new Set();
+      (stickers || []).forEach((row) => {
+        const key = `${row.member_name}|${row.block_key}`;
+        stickerSet.add(key);
+      });
+
+      renderTaskBoard(taskMap, stickerSet);
+
+      nameScreen.classList.add("hidden");
+      timerScreen.classList.add("hidden");
+      chatScreen.classList.add("hidden");
+      boardScreen.classList.remove("hidden");
+      statusLine.textContent = "";
+    }
+
+    function renderTaskBoard(taskMap, stickerSet) {
+      taskBoardTable.innerHTML = "";
+      boardEditableInputs = [];
+
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      const memberTh = document.createElement("th");
+      memberTh.textContent = "이름";
+      memberTh.className = "member-col";
+      headRow.appendChild(memberTh);
+
+      boardSlots.forEach((slot) => {
+        const th = document.createElement("th");
+        th.textContent = slot.label;
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+      taskBoardTable.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+
+      boardMembers.forEach((member) => {
+        const tr = document.createElement("tr");
+        const nameTd = document.createElement("td");
+        nameTd.textContent = member;
+        nameTd.className = "member-col";
+        tr.appendChild(nameTd);
+
+        const isMe = member === selectedName;
+        const emoji = getEmojiFromName(member);
+
+        boardSlots.forEach((slot) => {
+          const key = `${member}|${slot.blockKey}`;
+          const existing = taskMap.get(key);
+          const hasSticker = stickerSet.has(key);
+
+          const td = document.createElement("td");
+          td.className = "board-task-cell";
+          if (isMe) td.classList.add("me");
+
+          if (isMe) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "board-task-input";
+            input.value = existing ? existing.task_text : "";
+            input.dataset.blockKey = slot.blockKey;
+            input.dataset.dateStr = slot.dateStr;
+            boardEditableInputs.push({ input, existing });
+            td.appendChild(input);
+          } else {
+            const div = document.createElement("div");
+            div.className = "board-task-text-readonly";
+            div.textContent = existing ? existing.task_text : "";
+            td.appendChild(div);
+          }
+
+          if (hasSticker) {
+            const em = document.createElement("span");
+            em.className = "board-task-emoji";
+            em.textContent = emoji;
+            td.appendChild(em);
+          }
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      taskBoardTable.appendChild(tbody);
+    }
+
+    async function saveBoard() {
+      if (!selectedName || !boardEditableInputs.length) {
+        boardScreen.classList.add("hidden");
+        timerScreen.classList.remove("hidden");
+        return;
+      }
+
+      const rowsToUpsert = [];
+      const keysToDelete = [];
+
+      boardEditableInputs.forEach(({ input, existing }) => {
+        const text = input.value.trim();
+        const blockKey = input.dataset.blockKey;
+        const dateStr = input.dataset.dateStr;
+        const start = new Date(blockKey);
+
+        if (text) {
+          rowsToUpsert.push({
+            member_name: selectedName,
+            block_key: blockKey,
+            block_date: dateStr,
+            block_start: start.toISOString(),
+            task_text: text
+          });
+        } else if (existing?.block_key) {
+          keysToDelete.push(existing.block_key);
+        }
+      });
+
+      statusLine.textContent = "내 할 일 저장 중...";
+
+      if (rowsToUpsert.length) {
+        const { error } = await supabase
+          .from("pomodoro_tasks")
+          .upsert(rowsToUpsert, { onConflict: "member_name,block_key" });
+        if (error) {
+          console.error("saveBoard upsert error", error);
+          statusLine.textContent = "할 일을 저장하지 못했습니다 😢";
+          return;
+        }
+      }
+
+      if (keysToDelete.length) {
+        const { error } = await supabase
+          .from("pomodoro_tasks")
+          .delete()
+          .eq("member_name", selectedName)
+          .in("block_key", keysToDelete);
+        if (error) {
+          console.error("saveBoard delete error", error);
+          statusLine.textContent = "일부 할 일을 삭제하지 못했습니다 😢";
+          return;
+        }
+      }
+
+      statusLine.textContent = "오늘 할 일 보드가 저장되었습니다 ✏️";
+      boardScreen.classList.add("hidden");
+      timerScreen.classList.remove("hidden");
+
+      const info = getCurrentBlock();
+      loadCurrentSessionTasks(info);
+    }
+
+    openBoardBtn.addEventListener("click", openBoard);
+    backToTimerBtn.addEventListener("click", () => {
+      boardScreen.classList.add("hidden");
+      timerScreen.classList.remove("hidden");
+    });
+    saveBoardBtn.addEventListener("click", saveBoard);
+
+    /* ---- 대화방 ---- */
+    function renderChatMessages(rows) {
+      chatMessagesCache = rows;
+      chatMessagesEl.innerHTML = "";
+
+      if (!rows.length) {
+        chatMessagesEl.innerHTML =
+          '<div style="font-size:0.8rem;color:#999;">아직 메시지가 없습니다. 첫 인사를 남겨보세요 😊</div>';
+        return;
+      }
+
+      rows.forEach((row) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "chat-message";
+        if (row.member_name === selectedName) wrapper.classList.add("me");
+
+        const meta = document.createElement("div");
+        meta.className = "chat-meta";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = row.member_name || "익명";
+        const timeSpan = document.createElement("span");
+        if (row.created_at) {
+          const d = new Date(row.created_at);
+          timeSpan.textContent = d.toLocaleTimeString("ko-KR", {
+            hour: "2-digit",
+            minute: "2-digit"
+          });
+        } else {
+          timeSpan.textContent = "";
+        }
+        meta.appendChild(nameSpan);
+        meta.appendChild(timeSpan);
+
+        const textDiv = document.createElement("div");
+        textDiv.className = "chat-text";
+        textDiv.textContent = row.message;
+
+        wrapper.appendChild(meta);
+        wrapper.appendChild(textDiv);
+        chatMessagesEl.appendChild(wrapper);
+      });
+
+      chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    }
+
+    async function loadChatMessages() {
+      const { data, error } = await supabase
+        .from("pomodoro_chat")
+        .select("*")
+        .order("created_at", { ascending: true })
+        .limit(200);
+
+      if (error) {
+        console.error("loadChatMessages error", error);
+        return;
+      }
+      renderChatMessages(data || []);
+    }
+
+    async function sendChat() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+      const text = chatInputEl.value.trim();
+      if (!text) return;
+
+      // 입력창 먼저 비우기
+      chatInputEl.value = "";
+
+      // 1) 로컬에서 먼저 바로 보여주기 (낙관적 업데이트)
+      const localRow = {
+        id: Date.now(), // 임시 id
+        member_name: selectedName,
+        message: text,
+        created_at: new Date().toISOString()
+      };
+      chatMessagesCache.push(localRow);
+      renderChatMessages(chatMessagesCache);
+
+      // 2) Supabase에 실제로 저장
+      const { error } = await supabase
+        .from("pomodoro_chat")
+        .insert({
+          member_name: selectedName,
+          message: text
+        });
+
+      if (error) {
+        console.error("sendChat error", error);
+        statusLine.textContent = "메시지를 보내지 못했습니다 😢";
+      }
+    }
+
+    function showChatScreen() {
+      if (!selectedName) {
+        alert("먼저 이름을 선택해 주세요!");
+        return;
+      }
+      nameScreen.classList.add("hidden");
+      timerScreen.classList.add("hidden");
+      boardScreen.classList.add("hidden");
+      chatScreen.classList.remove("hidden");
+      statusLine.textContent = "";
+      loadChatMessages();
+      setTimeout(() => {
+        chatInputEl.focus();
+      }, 50);
+    }
+
+    openChatBtn.addEventListener("click", showChatScreen);
+    backFromChatBtn.addEventListener("click", showTimerScreen);
+    sendChatBtn.addEventListener("click", sendChat);
+    chatInputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendChat();
+      }
+    });
+
+    /* ---- 실시간 채널 ---- */
     supabase
       .channel("pomodoro_active_channel")
       .on(
@@ -1694,13 +1716,27 @@
       )
       .subscribe();
 
+    supabase
+      .channel("pomodoro_chat_channel")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "pomodoro_chat" },
+        () => {
+          // 새 메시지 들어오면 전체를 다시 로드해서
+          // 중복 없이 최신상태 유지
+          loadChatMessages();
+        }
+      )
+      .subscribe();
+
+    /* ---- 초기화 ---- */
     function init() {
       const savedName = localStorage.getItem("pomodoroName");
       if (savedName && MEMBERS.includes(savedName)) {
         selectedName = savedName;
       }
       renderNameButtons("");
-      if (selectedName) showTaskScreen();
+      if (selectedName) showTimerScreen();
       else showNameScreen();
     }
 
