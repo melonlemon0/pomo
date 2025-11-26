@@ -54,7 +54,6 @@
       margin-top: 8px;
     }
 
-    /* 이름 선택 화면 */
     .section-title {
       font-size: 0.95rem;
       font-weight: 600;
@@ -156,7 +155,6 @@
       color: #888;
     }
 
-    /* 타이머 화면 헤더 */
     .timer-header {
       display: flex;
       justify-content: space-between;
@@ -190,7 +188,6 @@
       color: #8c2649;
     }
 
-    /* 타이머 */
     .timer-wrapper {
       display: flex;
       flex-direction: column;
@@ -294,7 +291,6 @@
       text-align: center;
     }
 
-    /* Task planner 화면 */
     .task-header {
       display: flex;
       justify-content: space-between;
@@ -373,7 +369,6 @@
       text-align: center;
     }
 
-    /* 이번 세션 할 일 보기 */
     .session-tasks {
       margin-top: 14px;
       padding: 10px 10px 8px;
@@ -429,7 +424,6 @@
       color: #999;
     }
 
-    /* Active members */
     .active-names-section {
       margin-top: 14px;
     }
@@ -467,7 +461,6 @@
       margin-top: 6px;
     }
 
-    /* 스티커 테이블 */
     .sticker-table {
       margin-top: 14px;
       font-size: 0.85rem;
@@ -509,7 +502,6 @@
       color: #555;
     }
 
-    /* 내 할 일 패널 */
     .my-tasks-panel {
       margin-top: 12px;
       padding: 10px 10px 12px;
@@ -778,7 +770,7 @@
     const goTaskBtn = document.getElementById("goTaskBtn");
 
     const currentNameTaskEl = document.getElementById("currentNameTask");
-       const backToNameBtn = document.getElementById("backToNameBtn");
+    const backToNameBtn = document.getElementById("backToNameBtn");
     const goTimerFromTaskBtn = document.getElementById("goTimerFromTaskBtn");
     const taskSlotsEl = document.getElementById("taskSlots");
 
@@ -811,7 +803,6 @@
     let myTasksData = [];
     let myEditableTasks = [];
 
-    // 현재 세션 정보
     function getCurrentBlock(now = new Date()) {
       const m = now.getMinutes();
       const s = now.getSeconds();
@@ -842,11 +833,6 @@
         blockKey,
         blockDateStr
       };
-    }
-
-    function getNextStudyStart(now = new Date()) {
-      const info = getCurrentBlock(now);
-      return new Date(info.blockStart.getTime() + 30 * 60 * 1000);
     }
 
     function getSessionWindowForJoin(joinedAtInput) {
@@ -1082,7 +1068,7 @@
       });
     }
 
-    // 🔥 Task planner: "현재 세션"부터 10개 세션
+    // 🔥 Task planner: 현재 세션부터 10개 세션
     function setupTaskPlanner() {
       const now = new Date();
       const currentInfo = getCurrentBlock(now);
@@ -1139,11 +1125,14 @@
       });
     }
 
+    // 🔥 2번 화면: 할 일 저장 (비우면 삭제)
     async function saveTasks() {
       if (!selectedName || !taskSlots.length) return;
+
       const inputs = taskSlotsEl.querySelectorAll(".task-input");
       const rowsToUpsert = [];
       const keysToDelete = [];
+
       const slotMap = new Map();
       taskSlots.forEach((s) => slotMap.set(s.blockKey, s));
 
@@ -1152,6 +1141,7 @@
         const blockKey = input.dataset.blockKey;
         const slot = slotMap.get(blockKey);
         if (!slot) return;
+
         if (text) {
           rowsToUpsert.push({
             member_name: selectedName,
@@ -1172,6 +1162,7 @@
         const { error } = await supabase
           .from("pomodoro_tasks")
           .upsert(rowsToUpsert, { onConflict: "member_name,block_key" });
+
         if (error) {
           console.error("saveTasks upsert error", error);
           statusLine.textContent = "할 일을 저장하지 못했습니다 😢";
@@ -1185,6 +1176,7 @@
           .delete()
           .eq("member_name", selectedName)
           .in("block_key", keysToDelete);
+
         if (error) {
           console.error("saveTasks delete error", error);
           statusLine.textContent = "일부 세션의 할 일을 삭제하지 못했습니다 😢";
@@ -1404,7 +1396,7 @@
       }
     }
 
-    // 🔥 여기에서 "member_name + block_key" 기준으로 수정/삭제 처리
+    // 🔥 3번 화면: 내 할 일 수정/삭제 저장 (id 기준, 비우면 삭제)
     async function saveMyTasksEdits() {
       if (!selectedName || !myEditableTasks.length) {
         myTasksPanel.classList.add("hidden");
@@ -1413,16 +1405,19 @@
 
       const inputs = myTasksListEl.querySelectorAll(".my-task-input");
       const rowsToUpsert = [];
-      const keysToDelete = [];
+      const idsToDelete = [];
 
       inputs.forEach((input) => {
         const idx = Number(input.dataset.index);
         const row = myEditableTasks[idx];
-        const text = input.value.trim();
         if (!row) return;
 
+        const text = input.value.trim();
+
         if (text) {
+          // 기존 id 유지해서 수정
           rowsToUpsert.push({
+            id: row.id,
             member_name: selectedName,
             block_key: row.block_key,
             block_date: row.block_date,
@@ -1430,8 +1425,10 @@
             task_text: text
           });
         } else {
-          // 빈 칸 ⇒ 삭제 대상
-          keysToDelete.push(row.block_key);
+          // 완전히 비운 경우 → 삭제 대상
+          if (row.id) {
+            idsToDelete.push(row.id);
+          }
         }
       });
 
@@ -1440,7 +1437,8 @@
       if (rowsToUpsert.length) {
         const { error } = await supabase
           .from("pomodoro_tasks")
-          .upsert(rowsToUpsert, { onConflict: "member_name,block_key" });
+          .upsert(rowsToUpsert, { onConflict: "id" });
+
         if (error) {
           console.error("saveMyTasksEdits upsert error", error);
           statusLine.textContent = "수정 내용을 저장하지 못했습니다 😢";
@@ -1448,12 +1446,12 @@
         }
       }
 
-      if (keysToDelete.length) {
+      if (idsToDelete.length) {
         const { error } = await supabase
           .from("pomodoro_tasks")
           .delete()
-          .eq("member_name", selectedName)
-          .in("block_key", keysToDelete);
+          .in("id", idsToDelete);
+
         if (error) {
           console.error("saveMyTasksEdits delete error", error);
           statusLine.textContent = "일부 할 일을 삭제하지 못했습니다 😢";
