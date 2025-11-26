@@ -196,8 +196,8 @@
     }
 
     .timer-circle {
-      width: 260px;
-      height: 260px;
+      width: min(260px, 70vw);
+      height: min(260px, 70vw);
       border-radius: 50%;
       border: 4px solid #ffcfe0;
       display: flex;
@@ -223,20 +223,46 @@
       box-shadow: 0 12px 30px rgba(255, 140, 184, 0.6);
     }
 
+    /* 🟦/🩷 뽀모 얼굴 */
+    .face-img {
+      position: absolute;
+      inset: 4%;
+      width: 92%;
+      height: 92%;
+      object-fit: contain;
+      z-index: 1;
+      pointer-events: none;
+      animation: faceFloat 7s ease-in-out infinite;
+    }
+
+    @keyframes faceFloat {
+      0% {
+        transform: translateY(2px) scale(1);
+      }
+      50% {
+        transform: translateY(-4px) scale(1.02);
+      }
+      100% {
+        transform: translateY(2px) scale(1);
+      }
+    }
+
     .timer-text {
       font-size: 3rem;
       font-weight: 700;
       color: #333;
       position: relative;
-      z-index: 2;
+      z-index: 3;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
     }
 
+    /* 둥둥 떠다니는 멤버 이모지 */
     .emoji-layer {
       position: absolute;
-      inset: 0;
+      inset: 8%;
       pointer-events: none;
       overflow: hidden;
-      z-index: 1;
+      z-index: 2;
     }
 
     .emoji-bubble {
@@ -249,14 +275,14 @@
     @keyframes floatEmoji {
       0% {
         transform: translate(var(--x-start), var(--y-start));
-        opacity: 0.45;
+        opacity: 0.55;
       }
       50% {
-        opacity: 0.75;
+        opacity: 0.9;
       }
       100% {
         transform: translate(var(--x-end), var(--y-end));
-        opacity: 0.4;
+        opacity: 0.45;
       }
     }
 
@@ -588,11 +614,6 @@
         padding: 16px 12px 14px;
       }
 
-      .timer-circle {
-        width: 220px;
-        height: 220px;
-      }
-
       .timer-text {
         font-size: 2.4rem;
       }
@@ -672,7 +693,11 @@
 
       <div class="timer-wrapper">
         <div class="timer-circle" id="timerCircle">
+          <!-- 뽀모 얼굴 이미지 -->
+          <img id="faceImg" class="face-img" src="face-study.png" alt="뽀모 얼굴" />
+          <!-- 떠다니는 멤버 이모지 -->
           <div class="emoji-layer" id="emojiLayer"></div>
+          <!-- 중앙 남은 시간 -->
           <div class="timer-text" id="timerDisplay">--:--</div>
         </div>
         <div class="timer-sub" id="timerSubText">
@@ -788,6 +813,7 @@
     const showStickersBtn = document.getElementById("showStickersBtn");
     const stickerTableEl = document.getElementById("stickerTable");
     const sessionTasksEl = document.getElementById("sessionTasks");
+    const faceImg = document.getElementById("faceImg");
 
     const myTasksBtn = document.getElementById("myTasksBtn");
     const myTasksPanel = document.getElementById("myTasksPanel");
@@ -900,6 +926,7 @@
         timerSubText.textContent = "정각/30분 기준 25분 공부 중입니다.";
         timerCircle.classList.add("study");
         timerCircle.classList.remove("break");
+        if (faceImg) faceImg.src = "face-study.png";
       } else {
         phaseLabel.textContent = "쉬는 시간 ☕ (5분)";
         phaseLabel.classList.add("break");
@@ -907,6 +934,7 @@
         timerSubText.textContent = "5분 휴식 타임! 물 마시고 스트레칭 🌿";
         timerCircle.classList.add("break");
         timerCircle.classList.remove("study");
+        if (faceImg) faceImg.src = "face-break.png";
       }
 
       if (info.blockKey !== lastTaskBlockKey) {
@@ -1045,10 +1073,10 @@
         const span = document.createElement("span");
         span.className = "emoji-bubble";
         span.textContent = emoji;
-        const xStart = (Math.random() * 140 - 70).toFixed(0) + "px";
-        const yStart = (Math.random() * 140 - 70).toFixed(0) + "px";
-        const xEnd = (Math.random() * 140 - 70).toFixed(0) + "px";
-        const yEnd = (Math.random() * 140 - 70).toFixed(0) + "px";
+        const xStart = (Math.random() * 120 - 60).toFixed(0) + "px";
+        const yStart = (Math.random() * 120 - 60).toFixed(0) + "px";
+        const xEnd = (Math.random() * 120 - 60).toFixed(0) + "px";
+        const yEnd = (Math.random() * 120 - 60).toFixed(0) + "px";
         span.style.setProperty("--x-start", xStart);
         span.style.setProperty("--y-start", yStart);
         span.style.setProperty("--x-end", xEnd);
@@ -1415,7 +1443,6 @@
         const text = input.value.trim();
 
         if (text) {
-          // 기존 id 유지해서 수정
           rowsToUpsert.push({
             id: row.id,
             member_name: selectedName,
@@ -1425,7 +1452,6 @@
             task_text: text
           });
         } else {
-          // 완전히 비운 경우 → 삭제 대상
           if (row.id) {
             idsToDelete.push(row.id);
           }
