@@ -621,11 +621,9 @@
         margin: 16px 8px;
         padding: 16px 12px 14px;
       }
-
       .timer-text {
         font-size: 2.4rem;
       }
-
       .name-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -636,7 +634,7 @@
   <div class="app">
     <h1>뽀모 실시간 타이머 🍅</h1>
     <div class="subtitle">
-      이름 선택 → 타이머 → 할 일 보드 & 대화방으로 같이 공부해요 💬
+      이름 선택 → 타이머 → 할 일 보드 &amp; 대화방으로 같이 공부해요 💬
     </div>
 
     <!-- 1. 이름 선택 화면 -->
@@ -652,9 +650,7 @@
         이름 선택 후 아래 버튼을 누르면 타이머 화면으로 이동합니다.
       </div>
       <div style="margin-top: 10px; text-align: center;">
-        <button id="goTimerBtn" class="primary-btn">
-          ⏱ 타이머로 가기
-        </button>
+        <button id="goTimerBtn" class="primary-btn">⏱ 타이머로 가기</button>
       </div>
     </div>
 
@@ -665,9 +661,7 @@
           현재 접속: <span id="currentName"></span>
         </div>
         <div class="phase-label" id="phaseLabel">계산 중...</div>
-        <button id="changeNameBtn" class="secondary-btn">
-          🔄 이름 변경
-        </button>
+        <button id="changeNameBtn" class="secondary-btn">🔄 이름 변경</button>
       </div>
 
       <div class="timer-wrapper">
@@ -678,6 +672,7 @@
         <div class="timer-sub" id="timerSubText">
           정각/30분 기준으로 자동으로 맞춰집니다.
         </div>
+
         <div class="timer-controls">
           <button id="startBtn" class="primary-btn">
             ▶️ 시작하기 (공부 중 표시)
@@ -686,17 +681,17 @@
             ⏹ 끝내기 (공부 종료)
           </button>
         </div>
+
         <div class="extra-controls">
           <button id="openBoardBtn" class="secondary-btn">
             🧾 오늘의 할 일 보드
           </button>
-          <button id="openChatBtn" class="secondary-btn">
-            💬 대화방
-          </button>
+          <button id="openChatBtn" class="secondary-btn">💬 대화방</button>
           <button id="showStickersBtn" class="secondary-btn">
             📊 스티커 기록
           </button>
         </div>
+
         <div class="status-line" id="statusLine"></div>
       </div>
 
@@ -708,8 +703,8 @@
         <div class="active-title">지금 같이 공부 중인 뽀모 멤버 🍅</div>
         <div id="activeNames" class="active-names"></div>
         <div class="hint-line">
-          ※ &ldquo;시작하기&rdquo;를 누르면 이름이 올라가고,<br />
-          &ldquo;끝내기&rdquo;를 눌러야 <strong>스티커 조건</strong>이 체크됩니다.<br />
+          ※ “시작하기”를 누르면 이름이 올라가고,<br />
+          “끝내기”를 눌러야 <strong>스티커 조건</strong>이 체크됩니다.<br />
           (스티커: 세션 시작 전/후 5분 + 종료 후 5분 이내)
         </div>
       </div>
@@ -727,9 +722,11 @@
         </button>
       </div>
       <div class="board-sub">
-        세로: 오늘 할 일을 한 번이라도 적은 뽀모 멤버 + 나 (내 이름이 항상 맨 위)<br />
+        세로: 오늘 할 일을 한 번이라도 적은 뽀모 멤버 + 나 (내 이름이 항상
+        맨 위)<br />
         가로: 아침 6시 ~ 밤 12시까지 30분 단위 세션.<br />
-        내 줄만 직접 수정 가능하고, 스티커를 얻은 세션에는 이모지가 표시됩니다.
+        내 줄만 직접 수정 가능하고, 스티커를 얻은 세션에는 이모지가
+        표시됩니다.
       </div>
       <div class="board-wrapper">
         <div class="board-scroll">
@@ -737,7 +734,11 @@
         </div>
         <div class="board-footer">
           <span>※ 칸 비우고 저장하면 해당 세션 할 일이 삭제됩니다.</span>
-          <button id="saveBoardBtn" class="primary-btn" style="padding:7px 12px;font-size:0.85rem;">
+          <button
+            id="saveBoardBtn"
+            class="primary-btn"
+            style="padding: 7px 12px; font-size: 0.85rem;"
+          >
             💾 내 할 일 저장
           </button>
         </div>
@@ -764,124 +765,219 @@
             type="text"
             placeholder="메시지를 입력하고 Enter 또는 전송 버튼을 눌러요 ✨"
           />
-          <button id="sendChatBtn" class="primary-btn">
-            보내기
-          </button>
+          <button id="sendChatBtn" class="primary-btn">보내기</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    const SUPABASE_URL = "https://upiobealvympxbypfmkc.supabase.co";
-    const SUPABASE_ANON_KEY =
+  <!-- 메인 스크립트 -->
+  <script>
+    // Supabase 초기화 (CDN 전역 객체 사용)
+    var SUPABASE_URL = "https://upiobealvympxbypfmkc.supabase.co";
+    var SUPABASE_ANON_KEY =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwaW9iZWFsdnltcHhieXBmbWtjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzNzYxNDIsImV4cCI6MjA3ODk1MjE0Mn0.mLvGyy-eMWr-ow2b2USMg7PXKq2EUfK1fyJEsdGThKw";
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // CDN에서 제공하는 전역 supabase 객체
+    var createClient = window.supabase.createClient;
+    var supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const MEMBERS = [
-      "박미선🧶","고주연🎬","문하영🌙","전은석🍕","이아로🐰","김태훈🪵","박정현🥁","윤장혁🦇",
-      "김민지🚈","이정철🌵","권도이🍟","임가영🔮","정성우🥰","김영서🐾","최문영🍎","이경표🎫",
-      "김성환🍘","성규현♾️","박은지🦚","박종혁🍷","김정현🎻","송창호🪖","박민석🛏️","이예원🎭",
-      "조재현🍍","조서영🇬🇧","고병찬⚽️","정민영🦦","조성현🍵","이지은💞","황새벽🌆","조정범🫒",
-      "박영훈👻","강민정🌽","박재진🌊","이승호🎲","김민정🍨","전하윤🧀","이남수👇","김은성🐱",
-      "김지환🔮","이재원💵","정연수🦭","김도훈🎖️","이금비🌧","최지원🕳","박민경🍉","권규범🐆",
-      "박대헌🥋","정다희🐿️","김창훈🪟","조충연🐦‍🔥","최다예🍭","최서영👍","노소현🐢","박우빈☔️",
-      "이가현🥞","배지은💍","정계훈🥚","인치광💡","강태훈💪","박경서🌅","박준표🐕","조원창🛡️",
-      "지슬아🧊","차민구♠️","양진희🐑","박혜연🎊","서원두☕️","안보현😎","우은지🍒","김민섭🕶️",
-      "박미선🐳","여지원🕹️","유현빈☀️","이현준🍫","이현지💌","허태웅🏀","류경호👮","박동건☄️",
-      "고희원😄","김기원⚪","김예원🐥","김준형🤖","김진곤🍙","김진수💦","김태경🌱","민지현🍏",
-      "백하윤❄️","송영훈💿","양소연🏟","윤신혜😆","윤주성🏰","이준호👣","이창현🐌","정병혁🏸",
-      "정예은🧇","정유민🐹","조민제🐦","최영인📀","하유청🐶","홍승현🍳"
+    var MEMBERS = [
+      "박미선🧶",
+      "고주연🎬",
+      "문하영🌙",
+      "전은석🍕",
+      "이아로🐰",
+      "김태훈🪵",
+      "박정현🥁",
+      "윤장혁🦇",
+      "김민지🚈",
+      "이정철🌵",
+      "권도이🍟",
+      "임가영🔮",
+      "정성우🥰",
+      "김영서🐾",
+      "최문영🍎",
+      "이경표🎫",
+      "김성환🍘",
+      "성규현♾️",
+      "박은지🦚",
+      "박종혁🍷",
+      "김정현🎻",
+      "송창호🪖",
+      "박민석🛏️",
+      "이예원🎭",
+      "조재현🍍",
+      "조서영🇬🇧",
+      "고병찬⚽️",
+      "정민영🦦",
+      "조성현🍵",
+      "이지은💞",
+      "황새벽🌆",
+      "조정범🫒",
+      "박영훈👻",
+      "강민정🌽",
+      "박재진🌊",
+      "이승호🎲",
+      "김민정🍨",
+      "전하윤🧀",
+      "이남수👇",
+      "김은성🐱",
+      "김지환🔮",
+      "이재원💵",
+      "정연수🦭",
+      "김도훈🎖️",
+      "이금비🌧",
+      "최지원🕳",
+      "박민경🍉",
+      "권규범🐆",
+      "박대헌🥋",
+      "정다희🐿️",
+      "김창훈🪟",
+      "조충연🐦‍🔥",
+      "최다예🍭",
+      "최서영👍",
+      "노소현🐢",
+      "박우빈☔️",
+      "이가현🥞",
+      "배지은💍",
+      "정계훈🥚",
+      "인치광💡",
+      "강태훈💪",
+      "박경서🌅",
+      "박준표🐕",
+      "조원창🛡️",
+      "지슬아🧊",
+      "차민구♠️",
+      "양진희🐑",
+      "박혜연🎊",
+      "서원두☕️",
+      "안보현😎",
+      "우은지🍒",
+      "김민섭🕶️",
+      "박미선🐳",
+      "여지원🕹️",
+      "유현빈☀️",
+      "이현준🍫",
+      "이현지💌",
+      "허태웅🏀",
+      "류경호👮",
+      "박동건☄️",
+      "고희원😄",
+      "김기원⚪",
+      "김예원🐥",
+      "김준형🤖",
+      "김진곤🍙",
+      "김진수💦",
+      "김태경🌱",
+      "민지현🍏",
+      "백하윤❄️",
+      "송영훈💿",
+      "양소연🏟",
+      "윤신혜😆",
+      "윤주성🏰",
+      "이준호👣",
+      "이창현🐌",
+      "정병혁🏸",
+      "정예은🧇",
+      "정유민🐹",
+      "조민제🐦",
+      "최영인📀",
+      "하유청🐶",
+      "홍승현🍳"
     ];
 
-    const nameScreen = document.getElementById("name-screen");
-    const timerScreen = document.getElementById("timer-screen");
-    const boardScreen = document.getElementById("board-screen");
-    const chatScreen = document.getElementById("chat-screen");
+    var nameScreen = document.getElementById("name-screen");
+    var timerScreen = document.getElementById("timer-screen");
+    var boardScreen = document.getElementById("board-screen");
+    var chatScreen = document.getElementById("chat-screen");
 
-    const nameListEl = document.getElementById("nameList");
-    const nameSearchEl = document.getElementById("nameSearch");
-    const goTimerBtn = document.getElementById("goTimerBtn");
+    var nameListEl = document.getElementById("nameList");
+    var nameSearchEl = document.getElementById("nameSearch");
+    var goTimerBtn = document.getElementById("goTimerBtn");
+    var currentNameEl = document.getElementById("currentName");
+    var changeNameBtn = document.getElementById("changeNameBtn");
+    var timerDisplay = document.getElementById("timerDisplay");
+    var timerSubText = document.getElementById("timerSubText");
+    var phaseLabel = document.getElementById("phaseLabel");
+    var timerCircle = document.getElementById("timerCircle");
+    var emojiLayerEl = document.getElementById("emojiLayer");
+    var startBtn = document.getElementById("startBtn");
+    var stopBtn = document.getElementById("stopBtn");
+    var statusLine = document.getElementById("statusLine");
+    var activeNamesEl = document.getElementById("activeNames");
+    var sessionTasksEl = document.getElementById("sessionTasks");
+    var showStickersBtn = document.getElementById("showStickersBtn");
+    var stickerTableEl = document.getElementById("stickerTable");
+    var openBoardBtn = document.getElementById("openBoardBtn");
+    var backToTimerBtn = document.getElementById("backToTimerBtn");
+    var taskBoardTable = document.getElementById("taskBoardTable");
+    var saveBoardBtn = document.getElementById("saveBoardBtn");
+    var openChatBtn = document.getElementById("openChatBtn");
+    var backFromChatBtn = document.getElementById("backFromChatBtn");
+    var chatMessagesEl = document.getElementById("chatMessages");
+    var chatInputEl = document.getElementById("chatInput");
+    var sendChatBtn = document.getElementById("sendChatBtn");
 
-    const currentNameEl = document.getElementById("currentName");
-    const changeNameBtn = document.getElementById("changeNameBtn");
-    const timerDisplay = document.getElementById("timerDisplay");
-    const timerSubText = document.getElementById("timerSubText");
-    const phaseLabel = document.getElementById("phaseLabel");
-    const timerCircle = document.getElementById("timerCircle");
-    const emojiLayerEl = document.getElementById("emojiLayer");
-    const startBtn = document.getElementById("startBtn");
-    const stopBtn = document.getElementById("stopBtn");
-    const statusLine = document.getElementById("statusLine");
-    const activeNamesEl = document.getElementById("activeNames");
-    const sessionTasksEl = document.getElementById("sessionTasks");
-    const showStickersBtn = document.getElementById("showStickersBtn");
-    const stickerTableEl = document.getElementById("stickerTable");
+    var selectedName = null;
+    var selectedButton = null;
+    var lastTaskBlockKey = null;
 
-    const openBoardBtn = document.getElementById("openBoardBtn");
-    const backToTimerBtn = document.getElementById("backToTimerBtn");
-    const taskBoardTable = document.getElementById("taskBoardTable");
-    const saveBoardBtn = document.getElementById("saveBoardBtn");
+    var boardSlots = [];
+    var boardMembers = [];
+    var boardEditableInputs = [];
 
-    const openChatBtn = document.getElementById("openChatBtn");
-    const backFromChatBtn = document.getElementById("backFromChatBtn");
-    const chatMessagesEl = document.getElementById("chatMessages");
-    const chatInputEl = document.getElementById("chatInput");
-    const sendChatBtn = document.getElementById("sendChatBtn");
-
-    let selectedName = null;
-    let selectedButton = null;
-    let lastTaskBlockKey = null;
-
-    // 보드용 데이터
-    let boardSlots = [];
-    let boardMembers = [];
-    let boardEditableInputs = [];
-
-    // 채팅 캐시
-    let chatMessagesCache = [];
+    var chatMessagesCache = [];
 
     /* ---- 공통 유틸 ---- */
     function getLocalDateStr(d) {
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${y}-${m}-${day}`;
+      var y = d.getFullYear();
+      var m = String(d.getMonth() + 1).padStart(2, "0");
+      var day = String(d.getDate()).padStart(2, "0");
+      return y + "-" + m + "-" + day;
     }
 
     /* ---- 블록 계산 ---- */
-    function getCurrentBlock(now = new Date()) {
-      const m = now.getMinutes();
-      const s = now.getSeconds();
-      const totalSec = m * 60 + s;
+    function getCurrentBlock(now) {
+      if (!now) now = new Date();
+      var m = now.getMinutes();
+      var s = now.getSeconds();
+      var totalSec = m * 60 + s;
 
-      const blockStart = new Date(now);
+      var blockStart = new Date(now.getTime());
       blockStart.setSeconds(0, 0);
       if (totalSec < 30 * 60) blockStart.setMinutes(0);
       else blockStart.setMinutes(30);
 
-      const blockEnd = new Date(blockStart.getTime() + 25 * 60 * 1000);
-      const joinDeadline = new Date(blockStart.getTime() + 5 * 60 * 1000);
-      const endDeadline = new Date(blockEnd.getTime() + 5 * 60 * 1000);
+      var blockEnd = new Date(blockStart.getTime() + 25 * 60 * 1000);
+      var joinDeadline = new Date(blockStart.getTime() + 5 * 60 * 1000);
+      var endDeadline = new Date(blockEnd.getTime() + 5 * 60 * 1000);
+      var phase = now < blockEnd ? "study" : "break";
+      var blockKey = blockStart.toISOString();
+      var blockDateStr = getLocalDateStr(blockStart);
 
-      const phase = now < blockEnd ? "study" : "break";
-      const blockKey = blockStart.toISOString();
-      const blockDateStr = getLocalDateStr(blockStart);
-
-      return { phase, blockStart, blockEnd, joinDeadline, endDeadline, blockKey, blockDateStr };
+      return {
+        phase: phase,
+        blockStart: blockStart,
+        blockEnd: blockEnd,
+        joinDeadline: joinDeadline,
+        endDeadline: endDeadline,
+        blockKey: blockKey,
+        blockDateStr: blockDateStr
+      };
     }
 
     function getSessionWindowForJoin(joinedAtInput) {
-      const d = new Date(joinedAtInput);
-      const sessionStart = new Date(d);
+      var d = new Date(joinedAtInput);
+      var sessionStart = new Date(d.getTime());
       sessionStart.setSeconds(0, 0);
 
-      const m = d.getMinutes();
-      const s = d.getSeconds();
-      const totalSec = m * 60 + s;
+      var m = d.getMinutes();
+      var s = d.getSeconds();
+      var totalSec = m * 60 + s;
 
       if (totalSec < 30 * 60) {
         if (totalSec < 25 * 60) {
@@ -897,24 +993,28 @@
           sessionStart.setMinutes(0);
         }
       }
-      const validUntil = new Date(sessionStart.getTime() + 30 * 60 * 1000);
-      return { sessionStart, validUntil };
+
+      var validUntil = new Date(sessionStart.getTime() + 30 * 60 * 1000);
+      return { sessionStart: sessionStart, validUntil: validUntil };
     }
 
     function formatTimeLabel(d) {
-      return d.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" });
+      return d.toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
     }
 
     /* ---- 타이머 ---- */
     function updateTimer() {
-      const now = new Date();
-      const m = now.getMinutes();
-      const s = now.getSeconds();
-      const totalSec = m * 60 + s;
-      const info = getCurrentBlock(now);
+      var now = new Date();
+      var m = now.getMinutes();
+      var s = now.getSeconds();
+      var totalSec = m * 60 + s;
 
-      let nextBoundary;
-      let phase;
+      var info = getCurrentBlock(now);
+      var nextBoundary;
+      var phase;
 
       if (totalSec < 25 * 60) {
         phase = "study";
@@ -930,10 +1030,13 @@
         nextBoundary = 60 * 60;
       }
 
-      const remaining = nextBoundary - totalSec;
-      const mm = Math.floor(remaining / 60);
-      const ss = remaining % 60;
-      timerDisplay.textContent = `${String(mm).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
+      var remaining = nextBoundary - totalSec;
+      if (remaining < 0) remaining = 0;
+      var mm = Math.floor(remaining / 60);
+      var ss = remaining % 60;
+
+      timerDisplay.textContent =
+        String(mm).padStart(2, "0") + ":" + String(ss).padStart(2, "0");
 
       if (phase === "study") {
         phaseLabel.textContent = "공부 시간 🍅 (25분)";
@@ -961,27 +1064,33 @@
     updateTimer();
 
     /* ---- 이름 선택 ---- */
-    function renderNameButtons(filter = "") {
+    function renderNameButtons(filter) {
+      if (filter === undefined || filter === null) filter = "";
       nameListEl.innerHTML = "";
-      const lower = filter.trim().toLowerCase();
+      var lower = filter.trim().toLowerCase();
 
-      MEMBERS.forEach((name) => {
-        if (lower && !name.toLowerCase().includes(lower)) return;
-        const btn = document.createElement("button");
+      MEMBERS.forEach(function (name) {
+        if (lower && name.toLowerCase().indexOf(lower) === -1) return;
+
+        var btn = document.createElement("button");
         btn.type = "button";
         btn.className = "name-btn";
         btn.textContent = name;
+
         if (selectedName === name) {
           btn.classList.add("selected");
           selectedButton = btn;
         }
-        btn.addEventListener("click", () => {
+
+        btn.addEventListener("click", function () {
           selectedName = name;
           localStorage.setItem("pomodoroName", selectedName);
+
           if (selectedButton) selectedButton.classList.remove("selected");
           btn.classList.add("selected");
           selectedButton = btn;
         });
+
         nameListEl.appendChild(btn);
       });
 
@@ -991,7 +1100,7 @@
       }
     }
 
-    nameSearchEl.addEventListener("input", (e) => {
+    nameSearchEl.addEventListener("input", function (e) {
       renderNameButtons(e.target.value);
     });
 
@@ -1014,24 +1123,28 @@
       boardScreen.classList.add("hidden");
       chatScreen.classList.add("hidden");
       statusLine.textContent = "";
+
       loadActiveMembers();
-      const info = getCurrentBlock();
+      var info = getCurrentBlock();
       loadCurrentSessionTasks(info);
     }
 
     goTimerBtn.addEventListener("click", showTimerScreen);
 
-    changeNameBtn.addEventListener("click", () => {
+    changeNameBtn.addEventListener("click", function () {
       leaveSession();
       showNameScreen();
     });
 
     /* ---- active 멤버 + 이모지 ---- */
     async function loadActiveMembers() {
-      const { data, error } = await supabase
+      var result = await supabase
         .from("pomodoro_active")
         .select("*")
         .order("joined_at", { ascending: true });
+
+      var data = result.data;
+      var error = result.error;
 
       if (error) {
         console.error("loadActiveMembers error", error);
@@ -1039,11 +1152,11 @@
         return;
       }
 
-      const now = new Date();
-      const filtered = (data || []).filter((row) => {
+      var now = new Date();
+      var filtered = (data || []).filter(function (row) {
         if (!row.joined_at) return true;
-        const { validUntil } = getSessionWindowForJoin(row.joined_at);
-        return now <= validUntil;
+        var windowInfo = getSessionWindowForJoin(row.joined_at);
+        return now <= windowInfo.validUntil;
       });
 
       renderActiveMembers(filtered);
@@ -1051,36 +1164,43 @@
 
     function renderActiveMembers(rows) {
       activeNamesEl.innerHTML = "";
+
       if (!rows.length) {
         activeNamesEl.innerHTML =
           '<span style="font-size:0.85rem;color:#aaa;">아직 아무도 공부를 시작하지 않았어요.</span>';
         renderEmojiLayer([]);
         return;
       }
-      rows.forEach((row) => {
-        const chip = document.createElement("div");
+
+      rows.forEach(function (row) {
+        var chip = document.createElement("div");
         chip.className = "active-chip";
         if (row.member_name === selectedName) chip.classList.add("me");
         chip.textContent = row.member_name;
         activeNamesEl.appendChild(chip);
       });
+
       renderEmojiLayer(rows);
     }
 
     function renderEmojiLayer(rows) {
       emojiLayerEl.innerHTML = "";
-      const maxEmojis = Math.min(rows.length, 10);
-      for (let i = 0; i < maxEmojis; i++) {
-        const row = rows[i];
-        const glyphs = Array.from(row.member_name);
-        const emoji = glyphs[glyphs.length - 1] || "🍅";
-        const span = document.createElement("span");
+      var maxEmojis = Math.min(rows.length, 10);
+
+      for (var i = 0; i < maxEmojis; i++) {
+        var row = rows[i];
+        var glyphs = Array.from(row.member_name);
+        var emoji = glyphs[glyphs.length - 1] || "🍅";
+
+        var span = document.createElement("span");
         span.className = "emoji-bubble";
         span.textContent = emoji;
-        const xStart = (Math.random() * 120 - 60).toFixed(0) + "px";
-        const yStart = (Math.random() * 120 - 60).toFixed(0) + "px";
-        const xEnd = (Math.random() * 120 - 60).toFixed(0) + "px";
-        const yEnd = (Math.random() * 120 - 60).toFixed(0) + "px";
+
+        var xStart = (Math.random() * 120 - 60).toFixed(0) + "px";
+        var yStart = (Math.random() * 120 - 60).toFixed(0) + "px";
+        var xEnd = (Math.random() * 120 - 60).toFixed(0) + "px";
+        var yEnd = (Math.random() * 120 - 60).toFixed(0) + "px";
+
         span.style.setProperty("--x-start", xStart);
         span.style.setProperty("--y-start", yStart);
         span.style.setProperty("--x-end", xEnd);
@@ -1089,16 +1209,20 @@
         span.style.top = "50%";
         span.style.fontSize = (Math.random() * 16 + 28).toFixed(0) + "px";
         span.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
+
         emojiLayerEl.appendChild(span);
       }
     }
 
     /* ---- 이번 세션 할 일 ---- */
     async function loadCurrentSessionTasks(info) {
-      const { data, error } = await supabase
+      var result = await supabase
         .from("pomodoro_tasks")
         .select("*")
         .eq("block_key", info.blockKey);
+
+      var data = result.data;
+      var error = result.error;
 
       if (error) {
         console.error("loadCurrentSessionTasks error", error);
@@ -1111,53 +1235,65 @@
 
     function renderSessionTasks(rows, info) {
       sessionTasksEl.innerHTML = "";
-      const timeLabel = formatTimeLabel(info.blockStart);
 
-      const titleDiv = document.createElement("div");
+      var timeLabel = formatTimeLabel(info.blockStart);
+      var titleDiv = document.createElement("div");
       titleDiv.className = "session-tasks-title";
-      titleDiv.textContent = `이번 세션 (${timeLabel}) 할 일 보기`;
+      titleDiv.textContent = "이번 세션 (" + timeLabel + ") 할 일 보기";
       sessionTasksEl.appendChild(titleDiv);
 
       if (!rows.length) {
-        const empty = document.createElement("div");
+        var empty = document.createElement("div");
         empty.className = "no-session-tasks";
         empty.textContent = "아직 이번 세션에 등록된 할 일이 없습니다.";
         sessionTasksEl.appendChild(empty);
         return;
       }
 
-      const myRow = rows.find((r) => r.member_name === selectedName);
-      const others = rows.filter((r) => r.member_name !== selectedName);
+      var myRow = rows.find(function (r) {
+        return r.member_name === selectedName;
+      });
+      var others = rows.filter(function (r) {
+        return r.member_name !== selectedName;
+      });
 
       if (myRow) {
-        const myCard = document.createElement("div");
+        var myCard = document.createElement("div");
         myCard.className = "my-task-card";
-        const h = document.createElement("div");
+
+        var h = document.createElement("div");
         h.className = "my-task-header";
-        h.textContent = `내 할 일 (${myRow.member_name})`;
-        const txt = document.createElement("div");
+        h.textContent = "내 할 일 (" + myRow.member_name + ")";
+
+        var txt = document.createElement("div");
         txt.className = "my-task-text";
         txt.textContent = myRow.task_text;
+
         myCard.appendChild(h);
         myCard.appendChild(txt);
         sessionTasksEl.appendChild(myCard);
       }
 
       if (others.length) {
-        const listDiv = document.createElement("div");
+        var listDiv = document.createElement("div");
         listDiv.className = "other-tasks-list";
-        others.forEach((r) => {
-          const item = document.createElement("div");
+
+        others.forEach(function (r) {
+          var item = document.createElement("div");
           item.className = "other-task-item";
-          const nameSpan = document.createElement("span");
+
+          var nameSpan = document.createElement("span");
           nameSpan.className = "other-name";
           nameSpan.textContent = r.member_name;
-          const textSpan = document.createElement("span");
+
+          var textSpan = document.createElement("span");
           textSpan.textContent = r.task_text;
+
           item.appendChild(nameSpan);
           item.appendChild(textSpan);
           listDiv.appendChild(item);
         });
+
         sessionTasksEl.appendChild(listDiv);
       }
     }
@@ -1170,17 +1306,18 @@
       }
       statusLine.textContent = "공부 시작 표시 중...";
 
+      // 기존 active 삭제
       await supabase
         .from("pomodoro_active")
         .delete()
         .eq("member_name", selectedName);
 
-      const { error } = await supabase
+      var result = await supabase
         .from("pomodoro_active")
         .insert({ member_name: selectedName });
 
-      if (error) {
-        console.error("joinSession error", error);
+      if (result.error) {
+        console.error("joinSession error", result.error);
         statusLine.textContent = "공부 시작을 표시하지 못했습니다 😢";
         return;
       }
@@ -1190,67 +1327,74 @@
     }
 
     async function recordSticker(info) {
-      const { data: existing, error: selError } = await supabase
+      var existingResult = await supabase
         .from("pomodoro_sessions")
         .select("id")
         .eq("member_name", selectedName)
         .eq("block_key", info.blockKey)
         .limit(1);
 
-      if (selError) {
-        console.error("recordSticker select error", selError);
+      if (existingResult.error) {
+        console.error("recordSticker select error", existingResult.error);
         return;
       }
+      var existing = existingResult.data;
       if (existing && existing.length) return;
 
-      const { error: insError } = await supabase
-        .from("pomodoro_sessions")
-        .insert({
-          member_name: selectedName,
-          block_key: info.blockKey,
-          block_date: info.blockDateStr,
-          block_start: info.blockStart.toISOString(),
-          block_end: info.blockEnd.toISOString(),
-          earned_sticker: true
-        });
+      var insertResult = await supabase.from("pomodoro_sessions").insert({
+        member_name: selectedName,
+        block_key: info.blockKey,
+        block_date: info.blockDateStr,
+        block_start: info.blockStart.toISOString(),
+        block_end: info.blockEnd.toISOString(),
+        earned_sticker: true
+      });
 
-      if (insError) console.error("recordSticker insert error", insError);
+      if (insertResult.error) {
+        console.error("recordSticker insert error", insertResult.error);
+      }
     }
 
     async function leaveSession() {
       if (!selectedName) return;
-      const now = new Date();
-      const info = getCurrentBlock(now);
+
+      var now = new Date();
+      var info = getCurrentBlock(now);
       statusLine.textContent = "공부 종료 표시 중...";
 
-      const { data: activeRows, error: activeErr } = await supabase
+      var activeResult = await supabase
         .from("pomodoro_active")
         .select("joined_at")
         .eq("member_name", selectedName)
         .limit(1);
 
-      let joinAt = null;
-      if (!activeErr && activeRows && activeRows.length) {
-        joinAt = activeRows[0].joined_at ? new Date(activeRows[0].joined_at) : null;
+      var joinAt = null;
+      if (!activeResult.error && activeResult.data && activeResult.data.length) {
+        joinAt = activeResult.data[0].joined_at
+          ? new Date(activeResult.data[0].joined_at)
+          : null;
       }
 
-      const { error } = await supabase
+      var deleteResult = await supabase
         .from("pomodoro_active")
         .delete()
         .eq("member_name", selectedName);
 
-      if (error) {
-        console.error("leaveSession error", error);
+      if (deleteResult.error) {
+        console.error("leaveSession error", deleteResult.error);
         statusLine.textContent = "공부 종료를 표시하지 못했습니다 😢";
         return;
       }
 
-      const startWindowStart = new Date(info.blockStart.getTime() - 5 * 60 * 1000);
-      const startWindowEnd = new Date(info.blockStart.getTime() + 5 * 60 * 1000);
-
-      const endOk = now >= info.blockEnd && now <= info.endDeadline;
-      const startOk =
-        joinAt && joinAt >= startWindowStart && joinAt <= startWindowEnd;
+      var startWindowStart = new Date(
+        info.blockStart.getTime() - 5 * 60 * 1000
+      );
+      var startWindowEnd = new Date(info.blockStart.getTime() + 5 * 60 * 1000);
+      var endOk = now >= info.blockEnd && now <= info.endDeadline;
+      var startOk =
+        joinAt &&
+        joinAt >= startWindowStart &&
+        joinAt <= startWindowEnd;
 
       if (startOk && endOk) {
         await recordSticker(info);
@@ -1271,15 +1415,15 @@
 
     /* ---- 스티커 기록 ---- */
     async function loadRecentStickers() {
-      const today = new Date();
-      const todayStr = getLocalDateStr(today);
-      const yesterday = new Date(today);
+      var today = new Date();
+      var todayStr = getLocalDateStr(today);
+      var yesterday = new Date(today.getTime());
       yesterday.setDate(yesterday.getDate() - 1);
-      const yStr = getLocalDateStr(yesterday);
+      var yStr = getLocalDateStr(yesterday);
 
       statusLine.textContent = "스티커 기록 불러오는 중...";
 
-      const { data, error } = await supabase
+      var result = await supabase
         .from("pomodoro_sessions")
         .select("*")
         .in("block_date", [yStr, todayStr])
@@ -1287,64 +1431,84 @@
         .order("block_start", { ascending: true })
         .order("member_name", { ascending: true });
 
+      var data = result.data;
+      var error = result.error;
+
       if (error) {
         console.error("loadRecentStickers error", error);
         statusLine.textContent = "스티커 기록을 불러오지 못했습니다 😢";
         return;
       }
-
       statusLine.textContent = "";
-      renderStickerTable(data || [], { todayStr, yStr });
+      renderStickerTable(data || [], { todayStr: todayStr, yStr: yStr });
     }
 
-    function renderStickerTable(rows, { todayStr, yStr }) {
+    function renderStickerTable(rows, opts) {
+      var todayStr = opts.todayStr;
+      var yStr = opts.yStr;
+
       stickerTableEl.innerHTML = "";
+
       if (!rows.length) {
         stickerTableEl.innerHTML =
           '<div class="no-stickers">스티커 기록이 없습니다.</div>';
         return;
       }
 
-      const byDate = new Map();
-      rows.forEach((row) => {
+      var byDate = new Map();
+      rows.forEach(function (row) {
         if (!byDate.has(row.block_date)) byDate.set(row.block_date, []);
         byDate.get(row.block_date).push(row);
       });
 
-      const dates = Array.from(byDate.keys()).sort();
-      let html = "";
-      dates.forEach((date) => {
-        const label =
-          date === todayStr
-            ? `📅 오늘 (${date})`
-            : date === yStr
-            ? `📅 어제 (${date})`
-            : `📅 ${date}`;
-        html += `<div class="date-label">${label}</div>`;
-        const rowsForDate = byDate.get(date);
-        const blocks = new Map();
-        rowsForDate.forEach((row) => {
-          const key = row.block_key;
-          const start = new Date(row.block_start);
-          if (!blocks.has(key)) blocks.set(key, { start, members: [] });
+      var dates = Array.from(byDate.keys()).sort();
+      var html = "";
+
+      dates.forEach(function (date) {
+        var label;
+        if (date === todayStr) {
+          label = "📅 오늘 (" + date + ")";
+        } else if (date === yStr) {
+          label = "📅 어제 (" + date + ")";
+        } else {
+          label = "📅 " + date;
+        }
+
+        html += '<div class="date-label">' + label + "</div>";
+
+        var rowsForDate = byDate.get(date);
+        var blocks = new Map();
+
+        rowsForDate.forEach(function (row) {
+          var key = row.block_key;
+          var start = new Date(row.block_start);
+          if (!blocks.has(key)) blocks.set(key, { start: start, members: [] });
           blocks.get(key).members.push(row.member_name);
         });
-        const entries = Array.from(blocks.values()).sort(
-          (a, b) => a.start - b.start
-        );
+
+        var entries = Array.from(blocks.values()).sort(function (a, b) {
+          return a.start - b.start;
+        });
+
         html +=
           '<table><thead><tr><th>세션</th><th>스티커 멤버</th></tr></thead><tbody>';
-        entries.forEach((b) => {
-          const timeLabel = b.start.toLocaleTimeString("ko-KR", {
+
+        entries.forEach(function (b) {
+          var timeLabel = b.start.toLocaleTimeString("ko-KR", {
             hour: "2-digit",
             minute: "2-digit"
           });
-          html += `<tr><td class="time-col">${timeLabel}</td><td>${b.members.join(
-            ", "
-          )}</td></tr>`;
+          html +=
+            '<tr><td class="time-col">' +
+            timeLabel +
+            "</td><td>" +
+            b.members.join(", ") +
+            "</td></tr>";
         });
+
         html += "</tbody></table>";
       });
+
       stickerTableEl.innerHTML = html;
     }
 
@@ -1352,18 +1516,19 @@
 
     /* ---- 할 일 보드 ---- */
     function getEmojiFromName(name) {
-      const chars = Array.from(name);
+      var chars = Array.from(name);
       return chars[chars.length - 1] || "🍅";
     }
 
     function buildBoardSlotsForToday() {
-      const today = new Date();
+      var today = new Date();
       today.setHours(6, 0, 0, 0);
-      const slots = [];
-      for (let i = 0; i < 36; i++) {
-        const start = new Date(today.getTime() + i * 30 * 60 * 1000);
+      var slots = [];
+
+      for (var i = 0; i < 36; i++) {
+        var start = new Date(today.getTime() + i * 30 * 60 * 1000);
         slots.push({
-          start,
+          start: start,
           blockKey: start.toISOString(),
           label: start.toLocaleTimeString("ko-KR", {
             hour: "2-digit",
@@ -1380,56 +1545,64 @@
         alert("먼저 이름을 선택해 주세요!");
         return;
       }
-
       statusLine.textContent = "할 일 보드를 불러오는 중...";
 
-      const today = new Date();
-      const todayStr = getLocalDateStr(today);
+      var today = new Date();
+      var todayStr = getLocalDateStr(today);
       boardSlots = buildBoardSlotsForToday();
 
-      const { data: tasks, error: taskErr } = await supabase
+      var taskResult = await supabase
         .from("pomodoro_tasks")
         .select("*")
         .eq("block_date", todayStr);
 
-      if (taskErr) {
-        console.error("openBoard tasks error", taskErr);
+      if (taskResult.error) {
+        console.error("openBoard tasks error", taskResult.error);
         statusLine.textContent = "오늘 할 일 보드를 불러오지 못했습니다 😢";
         return;
       }
 
-      const memberSet = new Set();
-      (tasks || []).forEach((row) => {
+      var tasks = taskResult.data || [];
+      var memberSet = new Set();
+      tasks.forEach(function (row) {
         if (row.member_name) memberSet.add(row.member_name);
       });
       memberSet.add(selectedName);
 
-      let members = Array.from(memberSet);
-      members.sort((a, b) => a.localeCompare(b, "ko-KR"));
-      members = [selectedName, ...members.filter((n) => n !== selectedName)];
+      var members = Array.from(memberSet);
+      members.sort(function (a, b) {
+        return a.localeCompare(b, "ko-KR");
+      });
+      members = [selectedName].concat(
+        members.filter(function (n) {
+          return n !== selectedName;
+        })
+      );
       boardMembers = members;
 
-      const { data: stickers, error: stickerErr } = await supabase
+      var stickerResult = await supabase
         .from("pomodoro_sessions")
         .select("*")
         .eq("block_date", todayStr)
         .eq("earned_sticker", true)
         .in("member_name", members);
 
-      if (stickerErr) {
-        console.error("openBoard stickers error", stickerErr);
+      if (stickerResult.error) {
+        console.error("openBoard stickers error", stickerResult.error);
       }
 
-      const taskMap = new Map();
-      (tasks || []).forEach((row) => {
+      var stickers = stickerResult.data || [];
+
+      var taskMap = new Map();
+      tasks.forEach(function (row) {
         if (!memberSet.has(row.member_name)) return;
-        const key = `${row.member_name}|${row.block_key}`;
+        var key = row.member_name + "|" + row.block_key;
         taskMap.set(key, row);
       });
 
-      const stickerSet = new Set();
-      (stickers || []).forEach((row) => {
-        const key = `${row.member_name}|${row.block_key}`;
+      var stickerSet = new Set();
+      stickers.forEach(function (row) {
+        var key = row.member_name + "|" + row.block_key;
         stickerSet.add(key);
       });
 
@@ -1446,60 +1619,64 @@
       taskBoardTable.innerHTML = "";
       boardEditableInputs = [];
 
-      const thead = document.createElement("thead");
-      const headRow = document.createElement("tr");
-      const memberTh = document.createElement("th");
+      var thead = document.createElement("thead");
+      var headRow = document.createElement("tr");
+
+      var memberTh = document.createElement("th");
       memberTh.textContent = "이름";
       memberTh.className = "member-col";
       headRow.appendChild(memberTh);
 
-      boardSlots.forEach((slot) => {
-        const th = document.createElement("th");
+      boardSlots.forEach(function (slot) {
+        var th = document.createElement("th");
         th.textContent = slot.label;
         headRow.appendChild(th);
       });
+
       thead.appendChild(headRow);
       taskBoardTable.appendChild(thead);
 
-      const tbody = document.createElement("tbody");
+      var tbody = document.createElement("tbody");
 
-      boardMembers.forEach((member) => {
-        const tr = document.createElement("tr");
-        const nameTd = document.createElement("td");
+      boardMembers.forEach(function (member) {
+        var tr = document.createElement("tr");
+
+        var nameTd = document.createElement("td");
         nameTd.textContent = member;
         nameTd.className = "member-col";
         tr.appendChild(nameTd);
 
-        const isMe = member === selectedName;
-        const emoji = getEmojiFromName(member);
+        var isMe = member === selectedName;
+        var emoji = getEmojiFromName(member);
 
-        boardSlots.forEach((slot) => {
-          const key = `${member}|${slot.blockKey}`;
-          const existing = taskMap.get(key);
-          const hasSticker = stickerSet.has(key);
+        boardSlots.forEach(function (slot) {
+          var key = member + "|" + slot.blockKey;
+          var existing = taskMap.get(key);
+          var hasSticker = stickerSet.has(key);
 
-          const td = document.createElement("td");
+          var td = document.createElement("td");
           td.className = "board-task-cell";
           if (isMe) td.classList.add("me");
 
           if (isMe) {
-            const input = document.createElement("input");
+            var input = document.createElement("input");
             input.type = "text";
             input.className = "board-task-input";
             input.value = existing ? existing.task_text : "";
             input.dataset.blockKey = slot.blockKey;
             input.dataset.dateStr = slot.dateStr;
-            boardEditableInputs.push({ input, existing });
+
+            boardEditableInputs.push({ input: input, existing: existing });
             td.appendChild(input);
           } else {
-            const div = document.createElement("div");
+            var div = document.createElement("div");
             div.className = "board-task-text-readonly";
             div.textContent = existing ? existing.task_text : "";
             td.appendChild(div);
           }
 
           if (hasSticker) {
-            const em = document.createElement("span");
+            var em = document.createElement("span");
             em.className = "board-task-emoji";
             em.textContent = emoji;
             td.appendChild(em);
@@ -1521,14 +1698,17 @@
         return;
       }
 
-      const rowsToUpsert = [];
-      const keysToDelete = [];
+      var rowsToUpsert = [];
+      var keysToDelete = [];
 
-      boardEditableInputs.forEach(({ input, existing }) => {
-        const text = input.value.trim();
-        const blockKey = input.dataset.blockKey;
-        const dateStr = input.dataset.dateStr;
-        const start = new Date(blockKey);
+      boardEditableInputs.forEach(function (obj) {
+        var input = obj.input;
+        var existing = obj.existing;
+
+        var text = input.value.trim();
+        var blockKey = input.dataset.blockKey;
+        var dateStr = input.dataset.dateStr;
+        var start = new Date(blockKey);
 
         if (text) {
           rowsToUpsert.push({
@@ -1538,7 +1718,7 @@
             block_start: start.toISOString(),
             task_text: text
           });
-        } else if (existing?.block_key) {
+        } else if (existing && existing.block_key) {
           keysToDelete.push(existing.block_key);
         }
       });
@@ -1546,24 +1726,26 @@
       statusLine.textContent = "내 할 일 저장 중...";
 
       if (rowsToUpsert.length) {
-        const { error } = await supabase
+        var upsertResult = await supabase
           .from("pomodoro_tasks")
           .upsert(rowsToUpsert, { onConflict: "member_name,block_key" });
-        if (error) {
-          console.error("saveBoard upsert error", error);
+
+        if (upsertResult.error) {
+          console.error("saveBoard upsert error", upsertResult.error);
           statusLine.textContent = "할 일을 저장하지 못했습니다 😢";
           return;
         }
       }
 
       if (keysToDelete.length) {
-        const { error } = await supabase
+        var deleteResult = await supabase
           .from("pomodoro_tasks")
           .delete()
           .eq("member_name", selectedName)
           .in("block_key", keysToDelete);
-        if (error) {
-          console.error("saveBoard delete error", error);
+
+        if (deleteResult.error) {
+          console.error("saveBoard delete error", deleteResult.error);
           statusLine.textContent = "일부 할 일을 삭제하지 못했습니다 😢";
           return;
         }
@@ -1573,12 +1755,12 @@
       boardScreen.classList.add("hidden");
       timerScreen.classList.remove("hidden");
 
-      const info = getCurrentBlock();
+      var info = getCurrentBlock();
       loadCurrentSessionTasks(info);
     }
 
     openBoardBtn.addEventListener("click", openBoard);
-    backToTimerBtn.addEventListener("click", () => {
+    backToTimerBtn.addEventListener("click", function () {
       boardScreen.classList.add("hidden");
       timerScreen.classList.remove("hidden");
     });
@@ -1595,18 +1777,20 @@
         return;
       }
 
-      rows.forEach((row) => {
-        const wrapper = document.createElement("div");
+      rows.forEach(function (row) {
+        var wrapper = document.createElement("div");
         wrapper.className = "chat-message";
         if (row.member_name === selectedName) wrapper.classList.add("me");
 
-        const meta = document.createElement("div");
+        var meta = document.createElement("div");
         meta.className = "chat-meta";
-        const nameSpan = document.createElement("span");
+
+        var nameSpan = document.createElement("span");
         nameSpan.textContent = row.member_name || "익명";
-        const timeSpan = document.createElement("span");
+
+        var timeSpan = document.createElement("span");
         if (row.created_at) {
-          const d = new Date(row.created_at);
+          var d = new Date(row.created_at);
           timeSpan.textContent = d.toLocaleTimeString("ko-KR", {
             hour: "2-digit",
             minute: "2-digit"
@@ -1614,15 +1798,17 @@
         } else {
           timeSpan.textContent = "";
         }
+
         meta.appendChild(nameSpan);
         meta.appendChild(timeSpan);
 
-        const textDiv = document.createElement("div");
+        var textDiv = document.createElement("div");
         textDiv.className = "chat-text";
         textDiv.textContent = row.message;
 
         wrapper.appendChild(meta);
         wrapper.appendChild(textDiv);
+
         chatMessagesEl.appendChild(wrapper);
       });
 
@@ -1630,17 +1816,17 @@
     }
 
     async function loadChatMessages() {
-      const { data, error } = await supabase
+      var result = await supabase
         .from("pomodoro_chat")
         .select("*")
         .order("created_at", { ascending: true })
         .limit(200);
 
-      if (error) {
-        console.error("loadChatMessages error", error);
+      if (result.error) {
+        console.error("loadChatMessages error", result.error);
         return;
       }
-      renderChatMessages(data || []);
+      renderChatMessages(result.data || []);
     }
 
     async function sendChat() {
@@ -1648,15 +1834,13 @@
         alert("먼저 이름을 선택해 주세요!");
         return;
       }
-      const text = chatInputEl.value.trim();
+      var text = chatInputEl.value.trim();
       if (!text) return;
 
-      // 입력창 먼저 비우기
       chatInputEl.value = "";
 
-      // 1) 로컬에서 먼저 바로 보여주기 (낙관적 업데이트)
-      const localRow = {
-        id: Date.now(), // 임시 id
+      var localRow = {
+        id: Date.now(),
         member_name: selectedName,
         message: text,
         created_at: new Date().toISOString()
@@ -1664,16 +1848,12 @@
       chatMessagesCache.push(localRow);
       renderChatMessages(chatMessagesCache);
 
-      // 2) Supabase에 실제로 저장
-      const { error } = await supabase
+      var result = await supabase
         .from("pomodoro_chat")
-        .insert({
-          member_name: selectedName,
-          message: text
-        });
+        .insert({ member_name: selectedName, message: text });
 
-      if (error) {
-        console.error("sendChat error", error);
+      if (result.error) {
+        console.error("sendChat error", result.error);
         statusLine.textContent = "메시지를 보내지 못했습니다 😢";
       }
     }
@@ -1689,7 +1869,8 @@
       chatScreen.classList.remove("hidden");
       statusLine.textContent = "";
       loadChatMessages();
-      setTimeout(() => {
+
+      setTimeout(function () {
         chatInputEl.focus();
       }, 50);
     }
@@ -1697,7 +1878,8 @@
     openChatBtn.addEventListener("click", showChatScreen);
     backFromChatBtn.addEventListener("click", showTimerScreen);
     sendChatBtn.addEventListener("click", sendChat);
-    chatInputEl.addEventListener("keydown", (e) => {
+
+    chatInputEl.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendChat();
@@ -1710,7 +1892,7 @@
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "pomodoro_active" },
-        () => {
+        function () {
           loadActiveMembers();
         }
       )
@@ -1721,9 +1903,7 @@
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "pomodoro_chat" },
-        () => {
-          // 새 메시지 들어오면 전체를 다시 로드해서
-          // 중복 없이 최신상태 유지
+        function () {
           loadChatMessages();
         }
       )
@@ -1731,11 +1911,12 @@
 
     /* ---- 초기화 ---- */
     function init() {
-      const savedName = localStorage.getItem("pomodoroName");
-      if (savedName && MEMBERS.includes(savedName)) {
+      var savedName = localStorage.getItem("pomodoroName");
+      if (savedName && MEMBERS.indexOf(savedName) !== -1) {
         selectedName = savedName;
       }
       renderNameButtons("");
+
       if (selectedName) showTimerScreen();
       else showNameScreen();
     }
